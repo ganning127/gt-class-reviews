@@ -13,71 +13,79 @@ export const ReviewCard = ({ review }) =>
     return (
         <Box p={4} borderRadius='10px' bg='#f5f5f5'>
 
-            <Flex>
-                <Button
-                    p={0}
-                    bg=""
-                    m={0}
-                    rightIcon={liked ? <AiFillLike /> : <AiOutlineLike />}
-                    color="#8a5a44"
-                    onClick={async () =>
-                    {
-                        setLikes(++review.likes);
-                        setLiked(true);
-                        await fetch(`/api/increment-likes/`, {
-                            method: "POST",
-                            body: JSON.stringify({
-                                _id: review._id,
-                                currLikes: review.likes,
-                                courseCode: review.courseCode
-                            }),
-                        });
 
-                        toast({
-                            title: "Post Liked.",
-                            status: "success",
-                            duration: 3000,
-                            isClosable: true,
-                        });
-                    }}
-                >
-                    {review.likes}
-                </Button>
+
+            <Flex>
+                <HStack>
+                    <Avatar src={review.user.imageUrl} height='40px' width='40px' />
+                    <Box>
+                        <Text fontSize='sm' m={0} p={0}><Text as='span' fontWeight='bold'>{review.user.fullName}</Text> on <Link href={`/course/${review.courseCode}`} color='blue.400' textDecor='underline' _hover={{
+                            color: 'blue.700'
+                        }}>{review.courseCode.toUpperCase()}</Link></Text>
+                        <Text fontSize='xs' m={0} p={0} color='gray.500'>{timeSince(new Date(review.created_at))} ago</Text>
+                    </Box>
+                </HStack>
+
                 <Spacer />
-                <Box>
-                    <IconButton
+
+                <Flex>
+                    <Button
                         p={0}
                         bg=""
                         m={0}
-                        color="blue.600"
-                        icon={<FiLink2 />}
+                        rightIcon={liked ? <AiFillLike /> : <AiOutlineLike />}
+                        color="#8a5a44"
                         onClick={async () =>
                         {
-                            navigator.clipboard.writeText(
-                                `https://gt-class-reviews.vercel.app/reviews/${review._id}`
-                            );
+                            setLikes(++review.likes);
+                            setLiked(true);
+                            await fetch(`/api/increment-likes/`, {
+                                method: "POST",
+                                body: JSON.stringify({
+                                    _id: review._id,
+                                    currLikes: review.likes,
+                                    courseCode: review.courseCode
+                                }),
+                            });
+
                             toast({
-                                title: "Link copied.",
-                                description: "The link to this post has been copied.",
+                                title: "Post Liked.",
                                 status: "success",
-                                duration: 9000,
+                                duration: 3000,
                                 isClosable: true,
                             });
                         }}
                     >
-                    </IconButton>
+                        {review.likes}
+                    </Button>
+                    <Box>
+                        <IconButton
+                            p={0}
+                            bg=""
+                            m={0}
+                            color="blue.600"
+                            icon={<FiLink2 />}
+                            onClick={async () =>
+                            {
+                                navigator.clipboard.writeText(
+                                    `https://gt-class-reviews.vercel.app/reviews/${review._id}`
+                                );
+                                toast({
+                                    title: "Link copied.",
+                                    description: "The link to this post has been copied.",
+                                    status: "success",
+                                    duration: 9000,
+                                    isClosable: true,
+                                });
+                            }}
+                        >
+                        </IconButton>
 
-                </Box>
+                    </Box>
+                </Flex>
             </Flex>
-            <HStack>
-                <Avatar src={review.user.imageUrl} height='40px' width='40px' />
-                <Box>
-                    <Text fontSize='sm' m={0} p={0}><Text as='span' fontWeight='bold'>{review.user.fullName}</Text> on <Link href={`/course/${review.courseCode}`} color='blue.400' textDecor='underline' _hover={{
-                        color: 'blue.700'
-                    }}>{review.courseCode.toUpperCase()}</Link></Text>
-                    <Text fontSize='xs' m={0} p={0} color='gray.500'>{timeSince(new Date(review.created_at))} ago</Text>
-                </Box>
-            </HStack>
+
+
             <Heading mt={4} size='sm'>{review.reviewTitle}</Heading>
             <Text mt={2}>{review.reviewComments}</Text>
         </Box >
