@@ -96,7 +96,7 @@ export default function RecentReviews({ success, initialReviews })
                 <title>Recent Reviews | GT Class Reviews</title>
             </Head>
 
-            <NavBar />
+            <NavBar active="recent reviews" />
 
             <Container maxW='container.md' p={4}>
                 <Heading fontWeight='extrabold' color='#b59318'>Recent Reviews</Heading>

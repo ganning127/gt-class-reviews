@@ -26,7 +26,7 @@ export default function Explore({ success, classes })
                 <title>Explore Classes | GT Class Reviews</title>
             </Head>
 
-            <NavBar />
+            <NavBar active="explore courses" />
 
             <Container maxW='container.xl'>
                 <TableContainer mt={16}>
