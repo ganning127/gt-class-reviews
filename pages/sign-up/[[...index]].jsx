@@ -1,16 +1,17 @@
 import { SignUp } from "@clerk/nextjs";
+import { NavBar } from "../../components/NavBar";
+import { Box } from '@chakra-ui/react';
 
 const SignUpPage = () => (
-    <center>
-        <title>Sign Up | GT Class Reviews</title>
 
-        <SignUp
-        // path="/sign-up"
-        // routing="path"
-        // signInUrl="/sign-in"
-        // redirectUrl="/"
-        />
-    </center>
+    <>
+        <title>Sign In | GT Class Reviews</title>
+        <NavBar />
+        <center>
+            <Box h={1} my={5} />
+            <SignUp />
+        </center>
+    </>
 );
 
 export default SignUpPage;
