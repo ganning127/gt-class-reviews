@@ -147,7 +147,7 @@ export default function Code({ foundClass, initialReviews })
                         {reviews.map((review, i) =>
                         {
                             return (
-                                <ReviewCard review={review} />
+                                <ReviewCard review={review} key={i} />
                             );
                         })}
 
