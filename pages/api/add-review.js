@@ -44,24 +44,24 @@ export default async function POST(req, res)
 
         // find the document
         let courseFound = classFind[0];
-        let newReviews = courseFound.reviews;
-        newReviews.push(body);
+        // let newReviews = courseFound.reviews;
+        // newReviews.push(body);
+        let numReviews = courseFound.numReviews;
 
         // update the reviews
-        let newAvgOverall = approxRollingAverage(courseFound.avgOverallRating, body.overallRating, newReviews.length);
-        let newAvgDiff = approxRollingAverage(courseFound.avgDiffRating, body.diffRating, newReviews.length);
-        let newAvgInterest = approxRollingAverage(courseFound.avgInterestingRating, body.interestingRating, newReviews.length);
-        let newAvgWorkload = approxRollingAverage(courseFound.avgWorkload, body.workload, newReviews.length);
+        let newAvgOverall = approxRollingAverage(courseFound.avgOverallRating, body.overallRating, numReviews + 1);
+        let newAvgDiff = approxRollingAverage(courseFound.avgDiffRating, body.diffRating, numReviews + 1);
+        let newAvgInterest = approxRollingAverage(courseFound.avgInterestingRating, body.interestingRating, numReviews + 1);
+        let newAvgWorkload = approxRollingAverage(courseFound.avgWorkload, body.workload, numReviews + 1);
 
         await classCollection.updateOne({ courseCode: { $eq: body.courseCode } }, [
             {
                 $set: {
-                    reviews: newReviews,
                     avgOverallRating: newAvgOverall,
                     avgDiffRating: newAvgDiff,
                     avgInterestingRating: newAvgInterest,
                     avgWorkload: newAvgWorkload,
-                    numReviews: newReviews.length
+                    numReviews: numReviews + 1
                 }
             }
         ]);

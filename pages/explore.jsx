@@ -20,15 +20,13 @@ import { useRouter } from 'next/navigation';
 export default function Explore({ success, classes })
 {
     const router = useRouter();
-
-    console.log(classes);
     return (
         <>
             <Head>
                 <title>Explore Classes | GT Class Reviews</title>
             </Head>
 
-            <NavBar active='explore courses' />
+            <NavBar />
 
             <Container maxW='container.xl'>
                 <TableContainer mt={16}>
@@ -51,7 +49,6 @@ export default function Explore({ success, classes })
                                     return (
                                         <Tr key={i} onClick={() =>
                                         {
-                                            console.log("ok");
                                             router.push(`/class/${c.courseCode}`);
                                         }} transition='all .1s' _hover={{
                                             color: "#B3A369",

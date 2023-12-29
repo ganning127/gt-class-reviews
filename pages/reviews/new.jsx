@@ -72,8 +72,6 @@ export default function Home()
                 isClosable: true,
             });
         }
-
-        console.log(data);
     };
 
     return (

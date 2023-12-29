@@ -10,7 +10,6 @@ const INITIAL_NUM = 10;
 
 export default function MostPopularReviews({ success, initialReviews })
 {
-    console.log(initialReviews);
     return (
         <>
             <Head>
@@ -52,7 +51,6 @@ export async function getServerSideProps()
         let reviews = await collection.find({}).limit(INITIAL_NUM).sort({ likes: -1 }).toArray();
         reviews = JSON.parse(JSON.stringify(reviews));
 
-        console.log(reviews);
         return {
             props: {
                 success: true,
