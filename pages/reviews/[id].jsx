@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { ObjectId } from "mongodb";
 import clientPromise from "../../lib/mongodb";
 
@@ -5,14 +6,24 @@ import { Container } from '@chakra-ui/react';
 import { ReviewCard } from '../../components/ReviewCard';
 import { Link } from "@chakra-ui/next-js";
 import { Text } from '@chakra-ui/react';
+import { NavBar } from '../../components/NavBar';
+
 export default function ReviewReview({ review })
 {
     return (
-        <Container maxW='container.md' p={4}>
-            <ReviewCard review={review} />
+        <>
+            <Head>
+                <title>{review.reviewTitle}</title>
+            </Head>
 
-            <Text mt={4} textAlign='center'><Link href='/reviews/recent' color='#B3A369' textDecoration='underline'>← View recent reviews</Link></Text>
-        </Container>
+            <NavBar />
+
+            <Container maxW='container.md' p={4}>
+                <ReviewCard review={review} />
+
+                <Text mt={4} textAlign='center'><Link href='/reviews/recent' color='#B3A369' textDecoration='underline'>← View recent reviews</Link></Text>
+            </Container>
+        </>
     );
 
 

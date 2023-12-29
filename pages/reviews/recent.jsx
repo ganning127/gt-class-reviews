@@ -111,7 +111,6 @@ export default function RecentReviews({ success, initialReviews })
                             return <ReviewCard key={index} review={review} />;
                         })
                     }
-
                     {
                         loading && <Spinner />
                     }
