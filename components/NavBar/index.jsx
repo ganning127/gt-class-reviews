@@ -9,7 +9,7 @@ import
     UserButton
 } from "@clerk/nextjs";
 
-export const NavBar = () =>
+export const NavBar = ({ active }) =>
 {
     const [scrollPosition, setScrollPosition] = useState(0);
     const handleScroll = () =>
@@ -66,12 +66,14 @@ export const NavBar = () =>
                                 base: "none",
                                 md: "flex",
                             }}
+                            active={active}
                         />
                         <NavContent.Mobile
                             display={{
                                 base: "flex",
                                 md: "none",
                             }}
+                            active={active}
                         />
                         <Box
                             display={{

@@ -104,7 +104,7 @@ const DesktopNavContent = (props) =>
     return (
         <HStack spacing="6" align="stretch" {...props}>
             {links.map((link, index) => (
-                <NavLink.Desktop key={index} href={link.href} fontSize="lg">
+                <NavLink.Desktop key={index} href={link.href} fontSize="md">
                     {link.label}
                 </NavLink.Desktop>
             ))}

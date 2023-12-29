@@ -60,7 +60,8 @@ export default async function POST(req, res)
                     avgOverallRating: newAvgOverall,
                     avgDiffRating: newAvgDiff,
                     avgInterestingRating: newAvgInterest,
-                    avgWorkload: newAvgWorkload
+                    avgWorkload: newAvgWorkload,
+                    numReviews: newReviews.length
                 }
             }
         ]);

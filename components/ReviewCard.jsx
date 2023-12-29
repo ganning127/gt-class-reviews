@@ -18,7 +18,7 @@ export const ReviewCard = ({ review }) =>
                     {review.anon && <Avatar src='/anon_default.png' height='40px' width='40px' />}
 
                     <Box>
-                        <Text fontSize='sm' m={0} p={0}><Text as='span' fontWeight='bold'>{review.anon ? "Anonymous" : review.user.fullName}</Text> on <Link href={`/course/${review.courseCode}`} color='#B3A369' textDecor='underline' _hover={{
+                        <Text fontSize='sm' m={0} p={0}><Text as='span' fontWeight='bold'>{review.anon ? "Anonymous" : review.user.fullName}</Text> on <Link href={`/class/${review.courseCode}`} color='#B3A369' textDecor='underline' _hover={{
                             color: 'blue.700'
                         }}>{review.courseCode.toUpperCase()}</Link></Text>
                         <Text fontSize='sm' m={0} p={0} color='gray.500' suppressHydrationWarning>{timeSince(new Date(review.created_at))} ago</Text>
@@ -86,13 +86,13 @@ export const ReviewCard = ({ review }) =>
 
             <Box mt={4}>
                 <Badge bg={numberToColorHsl(review.overallRating * 10)} color={review.overallRating <= 2 ? 'white' : ""} mr={2}>{review.overallRating} / 10 Overall</Badge>
-                <Badge bg={numberToColorHsl(review.diffRating * 10)} color={review.diffRating <= 2 ? 'white' : ""} mr={2}>{review.diffRating}/ 10 Difficulty</Badge>
+                <Badge bg={numberToColorHsl((10 - review.diffRating) * 10)} color={review.diffRating <= 2 ? 'white' : ""} mr={2}>{review.diffRating}/ 10 Difficulty</Badge>
                 <Badge bg={numberToColorHsl(review.interestingRating * 10)} color={review.interestingRating <= 2 ? 'white' : ""} mr={2}>{review.interestingRating} / 10 Interesting</Badge>
                 <Badge bg={numberToColorHslWorkload(review.workload)} color={review.workload >= 18 ? 'white' : ""}>{review.workload} hours/week</Badge>
 
             </Box>
 
-            <Heading mt={4} size='sm' color='#003057'>{review.reviewTitle}</Heading>
+            <Heading mt={4} size='sm'>{review.reviewTitle}</Heading>
             <Text mt={2}>{review.reviewComments}</Text>
         </Box >
     );
