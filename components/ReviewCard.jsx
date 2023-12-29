@@ -1,4 +1,4 @@
-import { Box, Text, Avatar, HStack, Heading, useToast, Spacer, Flex, Button, IconButton } from "@chakra-ui/react";
+import { Box, Text, Avatar, HStack, Heading, useToast, Spacer, Flex, Button, IconButton, Badge } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
 import { FiLink2 } from "react-icons/fi";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
@@ -11,18 +11,17 @@ export const ReviewCard = ({ review }) =>
     const toast = useToast();
 
     return (
-        <Box p={4} borderRadius='10px' bg='#f5f5f5'>
-
-
-
+        <Box p={4} borderRadius='10px' bg='#f1f1f1'>
             <Flex>
                 <HStack>
-                    <Avatar src={review.user.imageUrl} height='40px' width='40px' />
+                    {!review.anon && <Avatar src={review.user.imageUrl} height='40px' width='40px' />}
+                    {review.anon && <Avatar src='/anon_default.png' height='40px' width='40px' />}
+
                     <Box>
-                        <Text fontSize='sm' m={0} p={0}><Text as='span' fontWeight='bold'>{review.user.fullName}</Text> on <Link href={`/course/${review.courseCode}`} color='blue.400' textDecor='underline' _hover={{
+                        <Text fontSize='sm' m={0} p={0}><Text as='span' fontWeight='bold'>{review.anon ? "Anonymous" : review.user.fullName}</Text> on <Link href={`/course/${review.courseCode}`} color='#B3A369' textDecor='underline' _hover={{
                             color: 'blue.700'
                         }}>{review.courseCode.toUpperCase()}</Link></Text>
-                        <Text fontSize='xs' m={0} p={0} color='gray.500'>{timeSince(new Date(review.created_at))} ago</Text>
+                        <Text fontSize='xs' m={0} p={0} color='gray.500' suppressHydrationWarning>{timeSince(new Date(review.created_at))} ago</Text>
                     </Box>
                 </HStack>
 
@@ -34,7 +33,7 @@ export const ReviewCard = ({ review }) =>
                         bg=""
                         m={0}
                         rightIcon={liked ? <AiFillLike /> : <AiOutlineLike />}
-                        color="#8a5a44"
+                        color="#B3A369"
                         onClick={async () =>
                         {
                             setLikes(++review.likes);
@@ -49,7 +48,7 @@ export const ReviewCard = ({ review }) =>
                             });
 
                             toast({
-                                title: "Post Liked.",
+                                title: "Review liked.",
                                 status: "success",
                                 duration: 3000,
                                 isClosable: true,
@@ -63,7 +62,7 @@ export const ReviewCard = ({ review }) =>
                             p={0}
                             bg=""
                             m={0}
-                            color="blue.600"
+                            color="#B3A369"
                             icon={<FiLink2 />}
                             onClick={async () =>
                             {
@@ -72,7 +71,7 @@ export const ReviewCard = ({ review }) =>
                                 );
                                 toast({
                                     title: "Link copied.",
-                                    description: "The link to this post has been copied.",
+                                    description: "The link to this review has been copied.",
                                     status: "success",
                                     duration: 9000,
                                     isClosable: true,
@@ -85,12 +84,81 @@ export const ReviewCard = ({ review }) =>
                 </Flex>
             </Flex>
 
+            <HStack mt={4}>
+                <Badge bg={numberToColorHsl(review.overallRating * 10)} color={review.overallRating <= 2 ? 'white' : ""}>{review.overallRating} / 10 Overall</Badge>
+                <Badge bg={numberToColorHsl(review.diffRating * 10)} color={review.diffRating <= 2 ? 'white' : ""}>{review.diffRating}/ 10 Difficulty</Badge>
+                <Badge bg={numberToColorHsl(review.interestingRating * 10)} color={review.interestingRating <= 2 ? 'white' : ""}>{review.interestingRating} / 10 Interesting</Badge>
+                <Badge bg={numberToColorHslWorkload(review.workload)} color={review.workload >= 18 ? 'white' : ""}>{review.workload} hours/week</Badge>
 
-            <Heading mt={4} size='sm'>{review.reviewTitle}</Heading>
+            </HStack>
+
+            <Heading mt={4} size='sm' color='#003057'>{review.reviewTitle}</Heading>
             <Text mt={2}>{review.reviewComments}</Text>
         </Box >
     );
 };
+
+function numberToColorHsl(i)
+{
+    // as the function expects a value between 0 and 1, and red = 0° and green = 120°
+    // we convert the input to the appropriate hue value
+    var hue = i * 1.2 / 360;
+    // we convert hsl to rgb (saturation 100%, lightness 50%)
+    var rgb = hslToRgb(hue, 1, .5);
+    // we format to css value and return
+    return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+}
+
+function numberToColorHslWorkload(i)
+{
+    // as the function expects a value between 0 and 1, and red = 0° and green = 120°
+    // we convert the input to the appropriate hue value
+    // 0 = good
+    // 20 = bad
+    if (i > 20)
+    {
+        i = 20;
+    }
+
+    i = 20 - i;
+
+
+    var hue = i * 6 / 360;
+    // we convert hsl to rgb (saturation 100%, lightness 50%)
+    var rgb = hslToRgb(hue, 1, .5);
+    // we format to css value and return
+    return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+}
+
+function hslToRgb(h, s, l)
+{
+    let r, g, b;
+
+    if (s === 0)
+    {
+        r = g = b = l; // achromatic
+    } else
+    {
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        r = hueToRgb(p, q, h + 1 / 3);
+        g = hueToRgb(p, q, h);
+        b = hueToRgb(p, q, h - 1 / 3);
+    }
+
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+}
+
+function hueToRgb(p, q, t)
+{
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+}
+
 
 const timeSince = (date) =>
 {
@@ -122,5 +190,6 @@ const timeSince = (date) =>
     {
         return Math.floor(interval) + " minutes";
     }
-    return Math.floor(seconds) + " seconds";
+    // return Math.floor(seconds) + " seconds"; // will cause React hydration errors
+    return "0 minutes";
 };
