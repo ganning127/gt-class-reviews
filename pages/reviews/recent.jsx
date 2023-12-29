@@ -1,7 +1,7 @@
 // show the most recent reviews
 
 import Head from 'next/head';
-import { Box, Stack, Text, Heading, Container, Divider, Spinner } from '@chakra-ui/react';
+import { Stack, Text, Heading, Container, Divider, Spinner } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import clientPromise from '../../lib/mongodb';
 import { ReviewCard } from '../../components/ReviewCard';
@@ -130,6 +130,7 @@ export async function getServerSideProps()
         const collection = db.collection("reviews");
 
         let reviews = await collection.find({}).limit(INITIAL_NUM).sort({ created_at: -1 }).toArray();
+
         reviews = JSON.parse(JSON.stringify(reviews));
 
         return {
