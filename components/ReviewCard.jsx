@@ -21,7 +21,7 @@ export const ReviewCard = ({ review }) =>
                         <Text fontSize='sm' m={0} p={0}><Text as='span' fontWeight='bold'>{review.anon ? "Anonymous" : review.user.fullName}</Text> on <Link href={`/course/${review.courseCode}`} color='#B3A369' textDecor='underline' _hover={{
                             color: 'blue.700'
                         }}>{review.courseCode.toUpperCase()}</Link></Text>
-                        <Text fontSize='xs' m={0} p={0} color='gray.500' suppressHydrationWarning>{timeSince(new Date(review.created_at))} ago</Text>
+                        <Text fontSize='sm' m={0} p={0} color='gray.500' suppressHydrationWarning>{timeSince(new Date(review.created_at))} ago</Text>
                     </Box>
                 </HStack>
 
