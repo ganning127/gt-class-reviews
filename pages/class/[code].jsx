@@ -1,16 +1,94 @@
 import Head from 'next/head';
 import clientPromise from "../../lib/mongodb";
 
-import { Container, Flex, Heading, SimpleGrid, Text, Badge, Box, Stack } from '@chakra-ui/react';
+import { Container, Flex, Heading, SimpleGrid, Text, Badge, Box, Stack, Spinner } from '@chakra-ui/react';
 import { ReviewCard } from '../../components/ReviewCard';
 import { Link } from "@chakra-ui/next-js";
 import { NavBar } from '../../components/NavBar';
 import { Footer } from '../../components/Footer';
 import { useRef } from 'react';
-export default function Code({ foundClass })
+import { useEffect, useState } from 'react';
+
+const INITIAL_NUM = 10;
+
+export default function Code({ foundClass, initialReviews })
 {
-    console.log(foundClass);
     const scrollContainer = useRef(null);
+    const [reviews, setReviews] = useState(initialReviews);
+    const [skip, setSkip] = useState(initialReviews.length);
+    const [loading, setLoading] = useState(false);
+    const limit = 10; // how many to fetch at a time
+
+    let isThrottled = false;
+    let moreCardsExist = true;
+
+    const fetchMoreCards = async (currentSkip) =>
+    {
+        if (!moreCardsExist) return;
+        if (isThrottled) return;
+        isThrottled = true;
+        setLoading(true);
+
+        try
+        {
+            const response = await fetch(`/api/get-reviews?skip=${currentSkip}&limit=${limit}?type=classPage`);
+            if (response.ok)
+            {
+                const newReviews = await response.json();
+
+                if (newReviews.length > 0)
+                {
+                    // Use functional updates to ensure you're using the most recent previous state when updating current state
+                    setReviews(prevReviews => [...prevReviews, ...newReviews]);
+                    setSkip(prevSkip => prevSkip + limit);
+                } else
+                {
+                    console.log("All cards have been fetched.");
+                    moreCardsExist = false;
+                }
+            } else
+            {
+                console.error('HTTP error when fetching new cards: ', response.status, response.statusText);
+            }
+            setLoading(false);
+        } catch (e)
+        {
+            console.error('Error when fetching new cards: ', e);
+        }
+
+        // to prevent multiple concurrent calls which may create weird behavior 
+        setTimeout(() =>
+        {
+            isThrottled = false;
+        }, 200);
+    };
+
+    useEffect(() =>
+    {
+        const handleScroll = () =>
+        {
+            // find whether the user has scrolled to the bottom of the grid 
+            const cardGrid = scrollContainer.current;
+            const offset = 50;  // will fetch more cards when you scroll to within this many px of the bottom 
+            const isNearBottom = cardGrid.scrollTop + cardGrid.clientHeight + offset >= cardGrid.scrollHeight;
+
+            if (isNearBottom)
+            {
+                fetchMoreCards(skip);
+            }
+        };
+
+        const cardGrid = scrollContainer.current;
+        cardGrid.addEventListener("scroll", handleScroll);
+
+        // this runs when the component unmounts and before each subsequent time useEffect runs 
+        return () =>
+        {
+            cardGrid.removeEventListener("scroll", handleScroll);
+        };
+
+
+    }, [skip]);
 
     return (
         <>
@@ -19,7 +97,6 @@ export default function Code({ foundClass })
             </Head>
 
             <NavBar />
-
 
             <Container maxW='container.xl' my={16}>
                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
@@ -67,18 +144,20 @@ export default function Code({ foundClass })
 
                     <Stack direction='column' maxHeight="80vh" overflowY="auto" ref={scrollContainer} spacing={4}>
 
-                        {foundClass.reviews.map((review, i) =>
+                        {reviews.map((review, i) =>
                         {
                             return (
                                 <ReviewCard review={review} />
                             );
                         })}
+
+                        {
+                            loading && <Spinner />
+                        }
                     </Stack>
-                </SimpleGrid >
+                </SimpleGrid>
             </Container >
-
             <Footer />
-
         </>
     );
 }
@@ -94,11 +173,18 @@ export async function getServerSideProps(context)
         courseCode: { $eq: code }
     }).toArray();
 
+    // ALWAYS PULLING THE MOST POPULAR REVIEWS
     const toReturn = JSON.parse(JSON.stringify(foundClass[0]));
+
+    const reviewCollection = db.collection("reviews");
+    let reviews = await reviewCollection.find({ courseCode: code }).limit(INITIAL_NUM).sort({ likes: -1 }).toArray();
+    reviews = JSON.parse(JSON.stringify(reviews));
+
 
     return {
         props: {
-            foundClass: toReturn
+            foundClass: toReturn,
+            initialReviews: reviews
         }
     };
 }

@@ -28,7 +28,7 @@ export default function RecentReviews({ success, initialReviews })
 
         try
         {
-            const response = await fetch(`/api/get-reviews?skip=${currentSkip}&limit=${limit}`);
+            const response = await fetch(`/api/get-reviews?skip=${currentSkip}&limit=${limit}?type=recent`);
             if (response.ok)
             {
                 const newReviews = await response.json();
