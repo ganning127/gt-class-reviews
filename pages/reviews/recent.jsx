@@ -6,6 +6,7 @@ import { Link } from '@chakra-ui/next-js';
 import clientPromise from '../../lib/mongodb';
 import { ReviewCard } from '../../components/ReviewCard';
 import { useState, useEffect } from 'react';
+import { NavBar } from '../../components/NavBar';
 
 const INITIAL_NUM = 10;
 
@@ -79,8 +80,6 @@ export default function RecentReviews({ success, initialReviews })
         };
     }, [skip]);
 
-
-
     if (!success)
     {
         return (
@@ -96,6 +95,9 @@ export default function RecentReviews({ success, initialReviews })
             <Head>
                 <title>Recent Reviews | GT Class Reviews</title>
             </Head>
+
+            <NavBar />
+
             <Container maxW='container.md' p={4}>
                 <Heading fontWeight='extrabold' color='#b59318'>Recent Reviews</Heading>
 

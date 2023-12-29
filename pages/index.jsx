@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { Box, Text, Heading, Button, Container, Img, HStack, Divider } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Footer } from '../components/Footer';
-
+import { NavBar } from '../components/NavBar';
 export default function Home()
 {
   return (
@@ -10,6 +10,8 @@ export default function Home()
       <Head>
         <title>GT Class Reviews</title>
       </Head>
+
+      <NavBar />
 
       <Container maxW='container.xl' mt={16}>
         <Box textAlign='center'>
@@ -19,7 +21,7 @@ export default function Home()
 
           <Text fontSize='lg' mt={4} mx='auto'>Questions about class workload? Class difficulty? Class advice? <br /><Text as='span' fontStyle='italic'>Find it all on GT Class Reviews!</Text></Text>
 
-          <HStack mt={8} justifyContent='center' spacingX={4}>
+          <HStack mt={8} justifyContent='center'>
             <Button bg='' borderWidth='1px' borderColor="#B3A369" color='#B3A369' _hover={{
               bg: "#B3A369",
               color: "white"

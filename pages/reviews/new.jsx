@@ -31,6 +31,7 @@ import
 } from '@chakra-ui/react';
 import { useUser } from '@clerk/nextjs';
 import { useState } from 'react';
+import { NavBar } from '../../components/NavBar';
 
 export default function Home()
 {
@@ -49,8 +50,6 @@ export default function Home()
 
     const handleSubmitReview = async () =>
     {
-        console.log("Submitting review...");
-
         const courseCodeUse = courseCode.toLowerCase().replaceAll(' ', '');
 
         const dataObj = {
@@ -82,6 +81,8 @@ export default function Home()
             <Head>
                 <title>Add Review | GT Class Reviews</title>
             </Head>
+
+            <NavBar />
             <Container maxW='container.lg' p={4}>
                 <Heading fontWeight='extrabold' color='#b59318'>Add a review</Heading>
 
