@@ -31,7 +31,7 @@ export default function Code({ foundClass, initialReviews })
 
         try
         {
-            const response = await fetch(`/api/get-reviews?skip=${currentSkip}&limit=${limit}?type=classPage`);
+            const response = await fetch(`/api/get-reviews?skip=${currentSkip}&limit=${limit}&courseCode=${foundClass.courseCode}&type=classPage`);
             if (response.ok)
             {
                 const newReviews = await response.json();

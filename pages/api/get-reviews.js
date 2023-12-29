@@ -10,8 +10,6 @@ export default async function GET(req, res)
     const skip = parseInt(req.query.skip);
     const limit = parseInt(req.query.limit);
 
-    const headers = JSON.parse(JSON.stringify(req.headers));
-
     let filter;
     let sort;
 
@@ -22,12 +20,14 @@ export default async function GET(req, res)
     } else if (req.query.type === "classPage")
     {
         filter = {
-            courseCode: { $eq: foundClass.courseCode }
+            courseCode: { $eq: req.query.courseCode }
         };
+
         sort = { likes: -1 };
 
     }
 
+    console.log(skip);
     let newReviews = await reviewCollection.find(filter).sort(sort).skip(skip).limit(limit).toArray();
 
     res.json(newReviews);  // send JSON data back to client
