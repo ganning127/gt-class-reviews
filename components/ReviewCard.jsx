@@ -84,13 +84,13 @@ export const ReviewCard = ({ review }) =>
                 </Flex>
             </Flex>
 
-            <HStack mt={4}>
-                <Badge bg={numberToColorHsl(review.overallRating * 10)} color={review.overallRating <= 2 ? 'white' : ""}>{review.overallRating} / 10 Overall</Badge>
-                <Badge bg={numberToColorHsl(review.diffRating * 10)} color={review.diffRating <= 2 ? 'white' : ""}>{review.diffRating}/ 10 Difficulty</Badge>
-                <Badge bg={numberToColorHsl(review.interestingRating * 10)} color={review.interestingRating <= 2 ? 'white' : ""}>{review.interestingRating} / 10 Interesting</Badge>
+            <Box mt={4}>
+                <Badge bg={numberToColorHsl(review.overallRating * 10)} color={review.overallRating <= 2 ? 'white' : ""} mr={2}>{review.overallRating} / 10 Overall</Badge>
+                <Badge bg={numberToColorHsl(review.diffRating * 10)} color={review.diffRating <= 2 ? 'white' : ""} mr={2}>{review.diffRating}/ 10 Difficulty</Badge>
+                <Badge bg={numberToColorHsl(review.interestingRating * 10)} color={review.interestingRating <= 2 ? 'white' : ""} mr={2}>{review.interestingRating} / 10 Interesting</Badge>
                 <Badge bg={numberToColorHslWorkload(review.workload)} color={review.workload >= 18 ? 'white' : ""}>{review.workload} hours/week</Badge>
 
-            </HStack>
+            </Box>
 
             <Heading mt={4} size='sm' color='#003057'>{review.reviewTitle}</Heading>
             <Text mt={2}>{review.reviewComments}</Text>
