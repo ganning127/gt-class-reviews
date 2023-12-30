@@ -101,7 +101,6 @@ const MobileNavContent = (props) =>
 
 const DesktopNavContent = (props) =>
 {
-    console.log(props.active);
     return (
         <HStack spacing="6" align="stretch" {...props}>
             {links.map((link, index) =>

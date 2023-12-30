@@ -87,7 +87,6 @@ export async function getServerSideProps()
 
   const classCollection = db.collection("classes");
   const numClasses = await classCollection.countDocuments();
-  console.log('hah', numClasses);
 
   const reviewCollection = db.collection("reviews");
   const numReviews = await reviewCollection.countDocuments();

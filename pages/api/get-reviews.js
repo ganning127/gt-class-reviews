@@ -27,7 +27,6 @@ export default async function GET(req, res)
 
     }
 
-    console.log(skip);
     let newReviews = await reviewCollection.find(filter).sort(sort).skip(skip).limit(limit).toArray();
 
     res.json(newReviews);  // send JSON data back to client
