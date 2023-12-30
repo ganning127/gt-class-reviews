@@ -70,12 +70,10 @@ export default function Home({ numClasses, numReviews })
             <Button rightIcon={<ArrowForwardIcon />} bg='#B3A369' color='white' _hover={{
               bg: "#876f17"
             }} as='a' href='/explore'>Get started</Button>
-            {/* TODO: change to iconButton */}
-
           </HStack>
         </Box>
 
-        <Img src='/homepage_cover.png' mx='auto' maxH='500px' mb={-10} />
+        <Img src='/homepage_cover.png' mx='auto' maxH='400px' />
 
         <Divider />
 
@@ -110,8 +108,11 @@ export default function Home({ numClasses, numReviews })
         </Flex>
 
         <Heading fontWeight='extrabold' color='#b59318' mt={16}>Frequently Asked Questions</Heading>
+        <Text>Can&apos;t find the answer to your question? Please <Link href='mailto:gt-class-reviews@gmail.com' color='#B3A369' _hover={{
+          color: '#b59318'
+        }}>contact us</Link> and we&apos;ll be happy to help!</Text>
 
-        <Accordion allowMultiple mt={8}>
+        <Accordion allowMultiple mt={8} id='faq'>
           {
             FAQ_CONTENT.map((faq, i) =>
             {

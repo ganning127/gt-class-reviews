@@ -33,6 +33,10 @@ const links = [
         href: "/reviews/popular",
     },
     {
+        label: "FAQ",
+        href: "/#faq",
+    },
+    {
         label: (
             <Button bg='#B3A369' color='white' _hover={{
                 bg: "#876f17"

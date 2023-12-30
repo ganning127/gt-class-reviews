@@ -59,7 +59,7 @@ export default function Explore({ success, classes })
 
             <NavBar active="explore courses" />
 
-            <Container maxW='container.xl' mb={4} py={16}>
+            <Container maxW='container.xl' mb={4} pb={16} pt={8}>
                 <Flex alignItems='center' mb={4} gap={4}>
                     <Text fontWeight='bold' color='#B3A369'>Search:</Text>
                     <Input placeholder="e.g. MATH 1554" onChange={handleSearch} />
