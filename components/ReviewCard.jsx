@@ -90,7 +90,6 @@ export const ReviewCard = ({ review }) =>
                 <Badge bg={numberToColorHsl((10 - review.diffRating) * 10)} color={review.diffRating <= 2 ? 'white' : ""} mr={2}>{review.diffRating}/ 10 Difficulty</Badge>
                 <Badge bg={numberToColorHsl(review.interestingRating * 10)} color={review.interestingRating <= 2 ? 'white' : ""} mr={2}>{review.interestingRating} / 10 Interesting</Badge>
                 <Badge bg={numberToColorHslWorkload(review.workload)} color={review.workload >= 17 ? 'white' : ""}>{review.workload} hours/week</Badge>
-
             </Box>
 
             <Heading mt={4} size='sm'>{review.reviewTitle}</Heading>

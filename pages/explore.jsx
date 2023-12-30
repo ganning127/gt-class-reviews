@@ -6,20 +6,48 @@ import
     Tbody,
     Tfoot,
     Tr,
+    Flex,
     Th,
     Td,
     TableCaption,
     TableContainer,
+    Input,
+    Stack
 } from '@chakra-ui/react';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
 import clientPromise from '../lib/mongodb';
 import { Footer } from '../components/Footer';
 import { NavBar } from '../components/NavBar';
 import { useRouter } from 'next/navigation';
+import { ClassCard } from '../components/ClassCard';
+import { useState } from 'react';
 
 export default function Explore({ success, classes })
 {
+    const origClasses = classes;
     const router = useRouter();
+
+    const [theClasses, setTheClasses] = useState(classes);
+
+    const handleSearch = async (event) =>
+    {
+        if (event.target.value === "")
+        {
+            setTheClasses(origClasses);
+            return;
+
+        }
+        console.log(event.target.value);
+        const resp = await fetch('/api/search-class', {
+            headers: {
+                value: event.target.value
+            }
+        });
+
+        const data = await resp.json();
+        console.log("DATA:", data);
+        setTheClasses(data);
+    };
+
     return (
         <>
             <Head>
@@ -28,8 +56,27 @@ export default function Explore({ success, classes })
 
             <NavBar active="explore courses" />
 
-            <Container maxW='container.xl'>
-                <TableContainer mt={16}>
+            <Container maxW='container.xl' mb={4} pt={16}>
+                <Flex alignItems='center' mb={4} gap={4}>
+                    <Text fontWeight='bold' color='#B3A369'>Search:</Text>
+                    <Input placeholder="e.g. MATH 1554" onChange={handleSearch} />
+                </Flex>
+                <Stack direction="column" spacing={2} display={{ base: "flex", md: "none" }}>
+                    {
+                        theClasses.map((c, i) =>
+                        {
+                            return (
+                                <ClassCard c={c} key={i} />
+                            );
+                        })
+                    }
+                </Stack>
+
+                {/* TableContainer only displays on laptop screens */}
+                <TableContainer display={{
+                    base: "none",
+                    md: "block",
+                }}>
                     <Table variant='simple'>
                         <Thead>
                             <Tr >
@@ -44,7 +91,7 @@ export default function Explore({ success, classes })
                         <Tbody>
 
                             {
-                                classes.map((c, i) =>
+                                theClasses.map((c, i) =>
                                 {
                                     return (
                                         <Tr key={i} onClick={() =>
