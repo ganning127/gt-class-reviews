@@ -28,11 +28,13 @@ import
     UnorderedList,
     Button,
     useToast
+
 } from '@chakra-ui/react';
 import { useUser } from '@clerk/nextjs';
 import { useState } from 'react';
 import { NavBar } from '../../components/NavBar';
 import { NextSeo } from 'next-seo';
+
 
 export default function Home()
 {
@@ -84,6 +86,7 @@ export default function Home()
             <NavBar />
             <Container maxW='container.lg' p={4}>
                 <Heading fontWeight='extrabold' color='#b59318'>Add a review</Heading>
+                <Text mt={2}>Thank you for contributing, your review helps GT students understand classes better :)</Text>
 
                 <Divider mt={4} />
 

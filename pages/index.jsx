@@ -1,5 +1,12 @@
 import Head from 'next/head';
-import { Box, Text, Heading, Button, Container, Img, HStack, Divider, List, ListItem, ListIcon, Flex } from '@chakra-ui/react';
+import
+{
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon, Box, Text, Heading, Button, Container, Img, HStack, Divider, List, ListItem, ListIcon, Flex
+} from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Footer } from '../components/Footer';
 import { NavBar } from '../components/NavBar';
@@ -9,6 +16,32 @@ import
 {
   NextSeo
 } from 'next-seo';
+
+import { Link } from '@chakra-ui/next-js';
+
+const FAQ_CONTENT = [
+  {
+    question: "Is GT Class Reviews free?",
+    answer: "Yes! GT Class Reviews is completely free, and always will be."
+  },
+  {
+    question: "Who made GT Class Reviews?",
+    answer: "GT Class Reviews is built by a computer science student at Georgia Tech."
+  },
+  {
+    question: "How does GT Class Reviews handle my data?",
+    answer: <Text>All data is stored securely in our MongoDB database. No one has unauthorized access to any user data. Read more about MongoDB’s security here: <Link href='https://www.mongodb.com/products/capabilities/security' isExternal>https://www.mongodb.com/products/capabilities/security</Link></Text>
+  },
+  {
+    question: "What is Clerk?",
+    answer: <Text>Clerk is how GT Class Reviews handles authentication. Read more about clerk here: <Link href='https://clerk.com' isExternal>https://clerk.com</Link></Text>
+  },
+  {
+    question: "Are anonymous reviews really anonymous?",
+    answer: "Yes, if you choose to post a review anonymously, your name, profile picture, and other information will never be shown."
+  }
+];
+
 export default function Home({ numClasses, numReviews })
 {
   return (
@@ -75,6 +108,33 @@ export default function Home({ numClasses, numReviews })
           </Box>
           <Img src='/gtcr_logo.png' w='250px' mx='auto' />
         </Flex>
+
+        <Heading fontWeight='extrabold' color='#b59318' mt={16}>Frequently Asked Questions</Heading>
+
+        <Accordion allowMultiple mt={8}>
+          {
+            FAQ_CONTENT.map((faq, i) =>
+            {
+              return (
+                <AccordionItem key={i}>
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex='1' textAlign='left' fontWeight='bold' color='#B3A369'>
+                        {faq.question}
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+
+                  <AccordionPanel pb={4}>
+                    {faq.answer}
+                  </AccordionPanel>
+
+                </AccordionItem>
+              );
+            })
+          }
+        </Accordion>
 
         <Box h={1} my={10} />
       </Container>
