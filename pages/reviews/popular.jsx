@@ -16,7 +16,7 @@ export default function MostPopularReviews({ success, initialReviews })
                 <title>Most Popular Reviews | GT Class Reviews</title>
             </Head>
 
-            <NavBar />
+            <NavBar active="popular" />
 
             <Container maxW='container.md' p={4}>
                 <Heading fontWeight='extrabold' color='#b59318'>Most Popular Reviews (based on likes)</Heading>

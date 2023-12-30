@@ -24,10 +24,13 @@ const links = [
         label: "Explore Courses",
         href: "/explore",
     },
-
     {
-        label: "Recent Reviews",
+        label: "Recent",
         href: "/reviews/recent",
+    },
+    {
+        label: "Popular",
+        href: "/reviews/popular",
     },
     {
         label: (
