@@ -3,6 +3,7 @@ import { Link } from "@chakra-ui/next-js";
 import { FiLink2 } from "react-icons/fi";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { useState } from "react";
+import { numberToColorHsl, numberToColorHslWorkload } from "../lib/colorFunctions";
 
 export const ReviewCard = ({ review }) =>
 {
@@ -88,7 +89,7 @@ export const ReviewCard = ({ review }) =>
                 <Badge bg={numberToColorHsl(review.overallRating * 10)} color={review.overallRating <= 2 ? 'white' : ""} mr={2}>{review.overallRating} / 10 Overall</Badge>
                 <Badge bg={numberToColorHsl((10 - review.diffRating) * 10)} color={review.diffRating <= 2 ? 'white' : ""} mr={2}>{review.diffRating}/ 10 Difficulty</Badge>
                 <Badge bg={numberToColorHsl(review.interestingRating * 10)} color={review.interestingRating <= 2 ? 'white' : ""} mr={2}>{review.interestingRating} / 10 Interesting</Badge>
-                <Badge bg={numberToColorHslWorkload(review.workload)} color={review.workload >= 18 ? 'white' : ""}>{review.workload} hours/week</Badge>
+                <Badge bg={numberToColorHslWorkload(review.workload)} color={review.workload >= 17 ? 'white' : ""}>{review.workload} hours/week</Badge>
 
             </Box>
 
@@ -97,68 +98,6 @@ export const ReviewCard = ({ review }) =>
         </Box >
     );
 };
-
-function numberToColorHsl(i)
-{
-    // as the function expects a value between 0 and 1, and red = 0° and green = 120°
-    // we convert the input to the appropriate hue value
-    var hue = i * 1.2 / 360;
-    // we convert hsl to rgb (saturation 100%, lightness 50%)
-    var rgb = hslToRgb(hue, 1, .5);
-    // we format to css value and return
-    return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
-}
-
-function numberToColorHslWorkload(i)
-{
-    // as the function expects a value between 0 and 1, and red = 0° and green = 120°
-    // we convert the input to the appropriate hue value
-    // 0 = good
-    // 20 = bad
-    if (i > 20)
-    {
-        i = 20;
-    }
-
-    i = 20 - i;
-
-
-    var hue = i * 6 / 360;
-    // we convert hsl to rgb (saturation 100%, lightness 50%)
-    var rgb = hslToRgb(hue, 1, .5);
-    // we format to css value and return
-    return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
-}
-
-function hslToRgb(h, s, l)
-{
-    let r, g, b;
-
-    if (s === 0)
-    {
-        r = g = b = l; // achromatic
-    } else
-    {
-        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-        const p = 2 * l - q;
-        r = hueToRgb(p, q, h + 1 / 3);
-        g = hueToRgb(p, q, h);
-        b = hueToRgb(p, q, h - 1 / 3);
-    }
-
-    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-}
-
-function hueToRgb(p, q, t)
-{
-    if (t < 0) t += 1;
-    if (t > 1) t -= 1;
-    if (t < 1 / 6) return p + (q - p) * 6 * t;
-    if (t < 1 / 2) return q;
-    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-    return p;
-}
-
 
 const timeSince = (date) =>
 {
