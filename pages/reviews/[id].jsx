@@ -7,14 +7,16 @@ import { ReviewCard } from '../../components/ReviewCard';
 import { Link } from "@chakra-ui/next-js";
 import { Text } from '@chakra-ui/react';
 import { NavBar } from '../../components/NavBar';
+import { NextSeo } from 'next-seo';
 
 export default function ReviewReview({ review })
 {
     return (
         <>
-            <Head>
-                <title>{review.reviewTitle}</title>
-            </Head>
+            <NextSeo
+                title={`${review.reviewTitle} | GT Class Reviews`}
+                description={review.reviewComments}
+            />
 
             <NavBar />
 

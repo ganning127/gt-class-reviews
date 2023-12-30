@@ -7,6 +7,7 @@ import clientPromise from '../../lib/mongodb';
 import { ReviewCard } from '../../components/ReviewCard';
 import { useState, useEffect } from 'react';
 import { NavBar } from '../../components/NavBar';
+import { NextSeo } from 'next-seo';
 
 const INITIAL_NUM = 10;
 
@@ -92,9 +93,10 @@ export default function RecentReviews({ success, initialReviews })
     }
     return (
         <>
-            <Head>
-                <title>Recent Reviews | GT Class Reviews</title>
-            </Head>
+            <NextSeo
+                title="Recent Reviews | GT Class Reviews"
+                description="The most recent reviews posted."
+            />
 
             <NavBar active="recent" />
 

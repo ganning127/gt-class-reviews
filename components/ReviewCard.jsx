@@ -128,6 +128,6 @@ const timeSince = (date) =>
     {
         return Math.floor(interval) + " minutes";
     }
-    // return Math.floor(seconds) + " seconds"; // will cause React hydration errors
-    return "0 minutes";
+    return Math.floor(seconds) + " seconds"; // will need to suppress Next.js hydration errors
+    // return "0 minutes";
 };

@@ -5,14 +5,18 @@ import { Footer } from '../components/Footer';
 import { NavBar } from '../components/NavBar';
 import clientPromise from "../lib/mongodb";
 import { CheckIcon } from '@chakra-ui/icons';
-
+import
+{
+  NextSeo
+} from 'next-seo';
 export default function Home({ numClasses, numReviews })
 {
   return (
     <>
-      <Head>
-        <title>GT Class Reviews</title>
-      </Head>
+      <NextSeo
+        title="GT Class Reviews"
+        description="Questions about class workload? Class difficulty? Class advice? Find it completely free, all on GT Class Reviews!"
+      />
 
       <NavBar />
 

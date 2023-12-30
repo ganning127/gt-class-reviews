@@ -3,23 +3,24 @@ import { Stack, Text, Heading, Container, Divider, Spinner } from '@chakra-ui/re
 import { Link } from '@chakra-ui/next-js';
 import clientPromise from '../../lib/mongodb';
 import { ReviewCard } from '../../components/ReviewCard';
-import { useState, useEffect } from 'react';
+import { NextSeo } from 'next-seo';
 import { NavBar } from '../../components/NavBar';
 
-const INITIAL_NUM = 10;
+const INITIAL_NUM = 20;
 
 export default function MostPopularReviews({ success, initialReviews })
 {
     return (
         <>
-            <Head>
-                <title>Most Popular Reviews | GT Class Reviews</title>
-            </Head>
+            <NextSeo
+                title="Most Popular Reviews | GT Class Reviews"
+                description="The 20 most popular reviews of all time."
+            />
 
             <NavBar active="popular" />
 
             <Container maxW='container.md' p={4}>
-                <Heading fontWeight='extrabold' color='#b59318'>Most Popular Reviews (based on likes)</Heading>
+                <Heading fontWeight='extrabold' color='#b59318'>The {INITIAL_NUM} Most Popular Reviews <br />(based on likes)</Heading>
 
                 <Divider mt={4} />
 

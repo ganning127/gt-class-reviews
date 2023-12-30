@@ -20,6 +20,7 @@ import { NavBar } from '../components/NavBar';
 import { useRouter } from 'next/navigation';
 import { ClassCard } from '../components/ClassCard';
 import { useState } from 'react';
+import { NextSeo } from 'next-seo';
 
 export default function Explore({ success, classes })
 {
@@ -50,13 +51,14 @@ export default function Explore({ success, classes })
 
     return (
         <>
-            <Head>
-                <title>Explore Classes | GT Class Reviews</title>
-            </Head>
+            <NextSeo
+                title="Explore Classes | GT Class Reviews"
+                description="Read reviews based on specific classes."
+            />
 
             <NavBar active="explore courses" />
 
-            <Container maxW='container.xl' mb={4} pt={16}>
+            <Container maxW='container.xl' mb={4} py={16}>
                 <Flex alignItems='center' mb={4} gap={4}>
                     <Text fontWeight='bold' color='#B3A369'>Search:</Text>
                     <Input placeholder="e.g. MATH 1554" onChange={handleSearch} />

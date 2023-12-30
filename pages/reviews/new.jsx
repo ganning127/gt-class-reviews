@@ -32,6 +32,7 @@ import
 import { useUser } from '@clerk/nextjs';
 import { useState } from 'react';
 import { NavBar } from '../../components/NavBar';
+import { NextSeo } from 'next-seo';
 
 export default function Home()
 {
@@ -76,10 +77,10 @@ export default function Home()
 
     return (
         <>
-            <Head>
-                <title>Add Review | GT Class Reviews</title>
-            </Head>
-
+            <NextSeo
+                title="Add Review | GT Class Reviews"
+                description="Contribute to our database of reviews."
+            />
             <NavBar />
             <Container maxW='container.lg' p={4}>
                 <Heading fontWeight='extrabold' color='#b59318'>Add a review</Heading>
