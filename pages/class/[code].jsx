@@ -143,7 +143,7 @@ export default function Code({ foundClass, initialReviews })
                         </Box>
                     </Box>
 
-                    <Stack direction='column' maxHeight="80vh" overflowY="auto" ref={scrollContainer} spacing={4}>
+                    <Stack direction='column' maxHeight="73vh" overflowY="auto" ref={scrollContainer} spacing={4}>
 
                         {reviews.map((review, i) =>
                         {
