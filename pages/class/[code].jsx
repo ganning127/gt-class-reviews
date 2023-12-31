@@ -100,7 +100,7 @@ export default function Code({ foundClass, initialReviews })
             <NavBar active="explore courses" />
 
             <Container maxW='container.xl' my={16}>
-                <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
+                <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={8}>
                     <Box>
                         <Box p={4} borderRadius='10px' border='1px solid #f1f1f1'>
                             {
@@ -138,6 +138,13 @@ export default function Code({ foundClass, initialReviews })
                                     {/* Show the average ratings */}
                                     <Heading bg={numberToColorHslWorkload(foundClass.avgWorkload)} color={foundClass.avgWorkload >= 17 ? 'white' : ""} display='inline' mr={2} p={1} rounded='md'>{foundClass.avgWorkload.toFixed(1)}</Heading>
                                     <Heading display='inline' size='md'>Average Workload (hrs/wk)</Heading>
+                                </Flex>
+
+
+                                <Flex alignItems='center'>
+                                    {/* Show the average ratings */}
+                                    <Heading bg='gray.200' display='inline' mr={2} p={1} rounded='md'>{foundClass.numReviews}</Heading>
+                                    <Heading display='inline' size='md'>Reviews Total</Heading>
                                 </Flex>
                             </Stack>
                         </Box>

@@ -1,15 +1,25 @@
-import { Box, Text, Avatar, HStack, Heading, useToast, Spacer, Flex, Button, IconButton, Badge } from "@chakra-ui/react";
+import { Box, Text, Avatar, HStack, Heading, Tooltip, useToast, Spacer, Flex, Button, IconButton, Badge, Icon } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
 import { FiLink2 } from "react-icons/fi";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { useState } from "react";
 import { numberToColorHsl, numberToColorHslWorkload } from "../lib/colorFunctions";
+import { BsCalendar, BsFillPersonBadgeFill } from "react-icons/bs";
 
 export const ReviewCard = ({ review }) =>
 {
     const [liked, setLiked] = useState(false);
     const [likes, setLikes] = useState(review.likes);
     const toast = useToast();
+
+    // convert "fall2023" to "Fall 2023"
+    let indexSplit = review.semTaken.indexOf('2');
+    let semTakenLst = [];
+    semTakenLst.push(review.semTaken.slice(0, indexSplit));
+    semTakenLst.push(review.semTaken.slice(indexSplit, review.semTaken.length));
+    semTakenLst[0] = semTakenLst[0].charAt(0).toUpperCase() + semTakenLst[0].slice(1);
+    const useSemTaken = semTakenLst.join(" ");
+    console.log(useSemTaken);
 
     return (
         <Box p={4} borderRadius='10px' bg='#f1f1f1'>
@@ -22,7 +32,17 @@ export const ReviewCard = ({ review }) =>
                         <Text fontSize='sm' m={0} p={0}><Text as='span' fontWeight='bold'>{review.anon ? "Anonymous" : review.user.fullName}</Text> on <Link href={`/class/${review.courseCode}`} color='#B3A369' textDecor='underline' _hover={{
                             color: 'blue.700'
                         }}>{review.courseCode.toUpperCase()}</Link></Text>
-                        <Text fontSize='sm' m={0} p={0} color='gray.500' suppressHydrationWarning>{timeSince(new Date(review.created_at))} ago</Text>
+                        <Flex align='center' gap={2} fontSize='sm' m={0} p={0} color='gray.500'>
+                            <Text suppressHydrationWarning>{timeSince(new Date(review.created_at))} ago</Text>•
+                            <Flex align='center' gap={1}>
+                                <Icon as={BsFillPersonBadgeFill} />
+                                <Text>{review.prof}</Text>
+                            </Flex>•
+                            <Flex align='center' gap={1}>
+                                <Icon as={BsCalendar} />
+                                <Text>{useSemTaken}</Text>
+                            </Flex>
+                        </Flex>
                     </Box>
                 </HStack>
 
