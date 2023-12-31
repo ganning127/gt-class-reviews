@@ -12,7 +12,7 @@ export const Footer = () =>
                     color: "#876f17"
                 }}>Contact Us</Link></Text>
                 <Spacer />
-                <Text>&copy; 2023 GT Class Reviews</Text>
+                <Text color='#876f17'>&copy; 2023 GT Class Reviews</Text>
 
             </Flex>
         </>

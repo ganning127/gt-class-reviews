@@ -34,25 +34,29 @@ import { useUser } from '@clerk/nextjs';
 import { useState } from 'react';
 import { NavBar } from '../../components/NavBar';
 import { NextSeo } from 'next-seo';
-
+import { useRouter } from 'next/router';
 
 export default function Home()
 {
     const toast = useToast();
     const { isSignedIn, user, isLoaded } = useUser();
-    const [courseCode, setCourseCode] = useState("MATH 1554");
-    const [prof, setProf] = useState("Salvador Barone");
+    const [courseCode, setCourseCode] = useState("");
+    const [prof, setProf] = useState("");
     const [semTaken, setSemTaken] = useState("fall2023");
     const [overallRating, setOverallRating] = useState(5);
     const [diffRating, setDiffRating] = useState(5);
     const [interestingRating, setInterestingRating] = useState(5);
-    const [workload, setWorkload] = useState(15);
-    const [reviewTitle, setReviewTitle] = useState("Challenging, but rewarding");
+    const [workload, setWorkload] = useState(10);
+    const [reviewTitle, setReviewTitle] = useState("");
     const [anon, setAnon] = useState(false);
-    const [reviewComments, setReviewComments] = useState("Math 1554 at Georgia Tech is a rigorous yet rewarding course that delves into multivariable calculus, often considered a cornerstone of higher mathematics and essential for various STEM fields. The course typically covers topics like vector functions, partial derivatives, multiple integrals, and vector calculus. Known for its challenging problem sets and in-depth theoretical exploration, Math 1554 pushes students to think critically and analytically, fostering a deep understanding of mathematical concepts rather than just rote memorization. Professors and teaching assistants are generally knowledgeable and committed to helping students succeed, offering ample resources like office hours, review sessions, and supplementary materials to aid in comprehension. However, the fast-paced nature of the course can be overwhelming for some students, requiring consistent dedication and practice to keep up with the demanding workload. \n\n Furthermore, the course often incorporates real-world applications, demonstrating the relevance of multivariable calculus in fields like physics, engineering, economics, and more. This practical approach helps students connect theoretical concepts to tangible problems, enhancing their problem-solving skills and preparing them for real-world challenges. Despite its intensity, Math 1554 at Georgia Tech is highly regarded for its ability to equip students with a strong mathematical foundation, empowering them to tackle complex problems and excel in their academic and professional endeavors.");
+    const [reviewComments, setReviewComments] = useState("");
+
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const handleSubmitReview = async () =>
     {
+        setLoading(true);
         const courseCodeUse = courseCode.toLowerCase().replaceAll(' ', '');
 
         const dataObj = {
@@ -74,7 +78,21 @@ export default function Home()
                 duration: 9000,
                 isClosable: true,
             });
+
+            router.push(`/review-submitted?courseCode=${courseCode}`);
+
+        } else
+        {
+            toast({
+                title: 'Review submission error.',
+                description: `There was an error submitting your review for ${courseCode}, please try again, or contact us if the issue persists.`,
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            });
         }
+
+        setLoading(false);
     };
 
     return (
@@ -229,14 +247,14 @@ export default function Home()
                                 <ListItem>Any additional insights or experiences</ListItem>
                             </UnorderedList>
                         </FormHelperText>
-                        <Textarea mt={4} placeholder={`e.g. ${courseCode} was...`} rows={8} value={reviewComments} onChange={(e) => setReviewComments(e.target.value)} />
+                        <Textarea mt={4} placeholder={`e.g. ${courseCode ? courseCode : "MATH 1554"} was...`} rows={8} value={reviewComments} onChange={(e) => setReviewComments(e.target.value)} />
                     </FormControl>
 
                     <Checkbox value={anon} onChange={(e) => setAnon(e.target.checked)}>post review anonymously</Checkbox>
 
                     <Button bg='#B3A369' color='white' _hover={{
                         bg: "#b59318"
-                    }} onClick={handleSubmitReview}>Submit Review</Button>
+                    }} onClick={handleSubmitReview} isLoading={loading} loadingText={`Submitting review for ${courseCode}`}>Submit Review</Button>
                 </Stack>
             </Container>
         </>

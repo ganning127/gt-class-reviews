@@ -22,12 +22,12 @@ import { ClassCard } from '../components/ClassCard';
 import { useState } from 'react';
 import { NextSeo } from 'next-seo';
 import { numberToColorHsl, numberToColorHslWorkload } from '../lib/colorFunctions';
+import { Link } from '@chakra-ui/next-js';
 
 export default function Explore({ success, classes })
 {
     const origClasses = classes;
     const router = useRouter();
-
     const [theClasses, setTheClasses] = useState(classes);
 
     const handleSearch = async (event) =>
@@ -38,7 +38,6 @@ export default function Explore({ success, classes })
             return;
 
         }
-        console.log(event.target.value);
         const resp = await fetch('/api/search-class', {
             headers: {
                 value: event.target.value
@@ -46,7 +45,6 @@ export default function Explore({ success, classes })
         });
 
         const data = await resp.json();
-        console.log("DATA:", data);
         setTheClasses(data);
     };
 
@@ -60,10 +58,20 @@ export default function Explore({ success, classes })
             <NavBar active="explore courses" />
 
             <Container maxW='container.xl' mb={4} pb={16} pt={8}>
-                <Flex alignItems='center' mb={4} gap={4}>
-                    <Text fontWeight='bold' color='#B3A369'>Search:</Text>
-                    <Input placeholder="e.g. MATH 1554" onChange={handleSearch} />
-                </Flex>
+
+                <Box mb={4}>
+                    <Flex alignItems='center' gap={4}>
+                        <Text fontWeight='bold' color='#B3A369'>Search:</Text>
+                        <Input placeholder="e.g. MATH 1554" onChange={handleSearch} />
+                    </Flex>
+
+
+                    <Text mt={2}>To add your own review of a GT class, please head to: <Link color='#B3A369' _hover={{
+                        textDecor: 'underline'
+                    }} href='https://gt-class-reviews.vercel.app/reviews/new' isExternal>https://gt-class-reviews.vercel.app/reviews/new</Link></Text>
+                </Box>
+
+
                 <Stack direction="column" spacing={2} display={{ base: "flex", md: "none" }}>
                     {
                         theClasses.map((c, i) =>
