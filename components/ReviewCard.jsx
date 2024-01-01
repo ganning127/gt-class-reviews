@@ -113,7 +113,7 @@ export const ReviewCard = ({ review }) =>
             </Box>
 
             <Heading mt={4} size='sm'>{review.reviewTitle}</Heading>
-            <Text mt={2}>{review.reviewComments}</Text>
+            <Text mt={2} whiteSpace="pre-line">{review.reviewComments}</Text>
         </Box >
     );
 };

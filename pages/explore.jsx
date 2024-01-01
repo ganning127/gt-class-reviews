@@ -55,7 +55,7 @@ export default function Explore({ success, classes })
                 description="Read reviews based on specific classes."
             />
 
-            <NavBar active="explore courses" />
+            <NavBar active="explore classes" />
 
             <Container maxW='container.xl' mb={4} pb={16} pt={8}>
 

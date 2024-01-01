@@ -21,7 +21,7 @@ import
 
 const links = [
     {
-        label: "Explore Courses",
+        label: "Explore Classes",
         href: "/explore",
     },
     {

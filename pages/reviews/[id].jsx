@@ -23,7 +23,7 @@ export default function ReviewReview({ review })
             <Container maxW='container.md' p={4}>
                 <ReviewCard review={review} />
 
-                <Text mt={4} textAlign='center'><Link href='/reviews/recent' color='#B3A369' textDecoration='underline'>← View recent reviews</Link></Text>
+                <Text mt={4} textAlign='center'><Link href='/explore' color='#B3A369' textDecoration='underline'>← View classes</Link></Text>
             </Container>
         </>
     );

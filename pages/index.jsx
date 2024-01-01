@@ -100,7 +100,7 @@ export default function Home({ numClasses, numReviews })
               </ListItem>
               <ListItem>
                 <ListIcon as={CheckIcon} color='#b59318' />
-                GT Course Reviews will always be completely free.
+                GT Class Reviews will always be completely free.
               </ListItem>
             </List>
           </Box>

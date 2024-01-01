@@ -57,6 +57,10 @@ export default function Home()
     const handleSubmitReview = async () =>
     {
         setLoading(true);
+
+        console.log(reviewComments.replaceAll(""));
+
+        return;
         const courseCodeUse = courseCode.toLowerCase().replaceAll(' ', '');
 
         const dataObj = {
