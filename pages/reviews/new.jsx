@@ -36,7 +36,7 @@ import { NavBar } from '../../components/NavBar';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 
-export default function Home()
+export default function New()
 {
     const toast = useToast();
     const { isSignedIn, user, isLoaded } = useUser();
@@ -58,9 +58,6 @@ export default function Home()
     {
         setLoading(true);
 
-        console.log(reviewComments.replaceAll(""));
-
-        return;
         const courseCodeUse = courseCode.toLowerCase().replaceAll(' ', '');
 
         const dataObj = {

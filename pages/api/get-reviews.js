@@ -22,9 +22,14 @@ export default async function GET(req, res)
         filter = {
             courseCode: { $eq: req.query.courseCode }
         };
-
         sort = { likes: -1 };
 
+    } else if (req.query.type === "me")
+    {
+        filter = {
+            "user.id": { $eq: req.query.userId }
+        };
+        sort = { created_at: -1 };
     }
 
     let newReviews = await reviewCollection.find(filter).sort(sort).skip(skip).limit(limit).toArray();

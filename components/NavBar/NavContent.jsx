@@ -33,6 +33,10 @@ const links = [
         href: "/reviews/popular",
     },
     {
+        label: "My Reviews",
+        href: "/reviews/me",
+    },
+    {
         label: "FAQ",
         href: "/#faq",
     },

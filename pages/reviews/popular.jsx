@@ -1,6 +1,4 @@
-import Head from 'next/head';
 import { Stack, Text, Heading, Container, Divider, Spinner } from '@chakra-ui/react';
-import { Link } from '@chakra-ui/next-js';
 import clientPromise from '../../lib/mongodb';
 import { ReviewCard } from '../../components/ReviewCard';
 import { NextSeo } from 'next-seo';
@@ -23,7 +21,6 @@ export default function MostPopularReviews({ success, initialReviews })
                 <Heading fontWeight='extrabold' color='#b59318'>The {INITIAL_NUM} Most Popular Reviews <br />(based on likes)</Heading>
 
                 <Divider mt={4} />
-
 
                 <Stack direction='column' spacing={4} mt={4}>
                     {

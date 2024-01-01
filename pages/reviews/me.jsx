@@ -1,20 +1,18 @@
-// show the most recent reviews
-
-import Head from 'next/head';
 import { Stack, Text, Heading, Container, Divider, Spinner } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import clientPromise from '../../lib/mongodb';
 import { ReviewCard } from '../../components/ReviewCard';
 import { useState, useEffect } from 'react';
 import { NavBar } from '../../components/NavBar';
+import { getAuth, buildClerkProps } from "@clerk/nextjs/server";
 import { NextSeo } from 'next-seo';
 
 const INITIAL_NUM = 10;
 
-export default function RecentReviews({ success, initialReviews })
+export default function MyReviews(props)
 {
-    const [reviews, setReviews] = useState(initialReviews);  // initially populated by `getServerSideProps`; then appended with `fetchMoreCards` 
-    const [skip, setSkip] = useState(initialReviews.length);
+    const [reviews, setReviews] = useState(props.initialReviews);  // initially populated by `getServerSideProps`; then appended with `fetchMoreCards` 
+    const [skip, setSkip] = useState(props.initialReviews.length);
     const [loading, setLoading] = useState(false);
     const limit = 10; // how many to fetch at a time
     let isThrottled = false;
@@ -29,7 +27,7 @@ export default function RecentReviews({ success, initialReviews })
 
         try
         {
-            const response = await fetch(`/api/get-reviews?skip=${currentSkip}&limit=${limit}&type=recent`);
+            const response = await fetch(`/api/get-reviews?skip=${currentSkip}&limit=${limit}&type=me&userId=${props.userId}`);
             if (response.ok)
             {
                 const newReviews = await response.json();
@@ -81,7 +79,7 @@ export default function RecentReviews({ success, initialReviews })
         };
     }, [skip]);
 
-    if (!success)
+    if (!props.success)
     {
         return (
             <>
@@ -94,14 +92,15 @@ export default function RecentReviews({ success, initialReviews })
     return (
         <>
             <NextSeo
-                title="Recent Reviews | GT Class Reviews"
-                description="The most recent reviews posted."
+                title="My Reviews | GT Class Reviews"
+                description="All the reviews you posted."
             />
 
-            <NavBar active="recent" />
+            <NavBar active="my reviews" />
 
             <Container maxW='container.md' p={4}>
-                <Heading fontWeight='extrabold' color='#b59318'>Recent Reviews</Heading>
+                <Heading fontWeight='extrabold' color='#b59318'>My Reviews</Heading>
+                <Text mt={2}>This page shows reviews that you wrote anonymously, but others will never see your name or profile picture when viewing an anonymous review.</Text>
 
                 <Divider mt={4} />
 
@@ -122,22 +121,27 @@ export default function RecentReviews({ success, initialReviews })
     );
 }
 
-export async function getServerSideProps()
+export async function getServerSideProps(context)
 {
     try
     {
+        const { userId } = getAuth(context.req);
         const client = await clientPromise;
         const db = client.db("GTClassReviews");
         const collection = db.collection("reviews");
 
-        let reviews = await collection.find({}).limit(INITIAL_NUM).sort({ created_at: -1 }).toArray();
+        let reviews = await collection.find({
+            "user.id": { $eq: userId }
+        }).limit(INITIAL_NUM).sort({ created_at: -1 }).toArray();
 
         reviews = JSON.parse(JSON.stringify(reviews));
 
         return {
             props: {
                 success: true,
-                initialReviews: reviews
+                initialReviews: reviews,
+                userId,
+                ...buildClerkProps(context.req)
             }
         };
 

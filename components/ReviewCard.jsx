@@ -19,7 +19,6 @@ export const ReviewCard = ({ review }) =>
     semTakenLst.push(review.semTaken.slice(indexSplit, review.semTaken.length));
     semTakenLst[0] = semTakenLst[0].charAt(0).toUpperCase() + semTakenLst[0].slice(1);
     const useSemTaken = semTakenLst.join(" ");
-    console.log(useSemTaken);
 
     return (
         <Box p={4} borderRadius='10px' bg='#f1f1f1'>
