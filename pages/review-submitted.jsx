@@ -1,6 +1,4 @@
-import { Link } from "@chakra-ui/next-js";
 import { Box, Button, Center, Heading, Text } from "@chakra-ui/react";
-import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useRouter } from "next/router";
 import { NavBar } from "../components/NavBar";
 import { Footer } from "../components/Footer";

@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import clientPromise from "../../lib/mongodb";
-
 import { Container, Flex, Heading, SimpleGrid, Text, Badge, Box, Stack, Spinner } from '@chakra-ui/react';
 import { ReviewCard } from '../../components/ReviewCard';
 import { Link } from "@chakra-ui/next-js";

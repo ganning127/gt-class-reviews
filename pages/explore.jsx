@@ -1,15 +1,13 @@
 import Head from 'next/head';
 import
 {
-    Box, Text, Heading, Button, Container, Img, HStack, Divider, Table,
+    Box, Text, Container, Table,
     Thead,
     Tbody,
-    Tfoot,
     Tr,
     Flex,
     Th,
     Td,
-    TableCaption,
     TableContainer,
     Input,
     Stack

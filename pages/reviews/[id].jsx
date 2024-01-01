@@ -1,7 +1,5 @@
-import Head from 'next/head';
 import { ObjectId } from "mongodb";
 import clientPromise from "../../lib/mongodb";
-
 import { Container } from '@chakra-ui/react';
 import { ReviewCard } from '../../components/ReviewCard';
 import { Link } from "@chakra-ui/next-js";

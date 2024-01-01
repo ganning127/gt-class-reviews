@@ -1,13 +1,11 @@
 import Head from 'next/head';
 import
 {
-    Box,
     Heading,
+    Input,
     FormControl,
     FormLabel,
-    FormErrorMessage,
     FormHelperText,
-    Input,
     Slider,
     SliderMark,
     SliderFilledTrack,
@@ -21,10 +19,7 @@ import
     Select,
     Textarea,
     Text,
-    List,
     ListItem,
-    ListIcon,
-    OrderedList,
     UnorderedList,
     Button,
     useToast
@@ -39,7 +34,7 @@ import { useRouter } from 'next/router';
 export default function New()
 {
     const toast = useToast();
-    const { isSignedIn, user, isLoaded } = useUser();
+    const { user } = useUser();
     const [courseCode, setCourseCode] = useState("");
     const [prof, setProf] = useState("");
     const [semTaken, setSemTaken] = useState("fall2023");
