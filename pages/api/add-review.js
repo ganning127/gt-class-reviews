@@ -17,13 +17,12 @@ export default async function POST(req, res)
 
     // inserting into the class collection
     const classCollection = db.collection("classes");
-
     let classFind = await classCollection.find({ courseCode: { $eq: body.courseCode } }).toArray();
 
     if (classFind.length == 0)
     {
         // no course document exists yet, create one here
-        // should send a notification to me
+        // TODO: should send a notification to me
 
         // since this is a new object, the average will be the same as the first review
         const classObj = {
@@ -34,7 +33,6 @@ export default async function POST(req, res)
             avgInterestingRating: body.interestingRating,
             avgWorkload: body.workload,
             numReviews: 1,
-            reviews: [body]
         };
 
         await classCollection.insertOne(classObj);
@@ -66,6 +64,29 @@ export default async function POST(req, res)
             }
         ]);
 
+
+        // userCollection
+        const usersCollection = db.collection("users");
+        let userFind = await usersCollection.find({ "user.id": { $eq: body.user.id } }).toArray();
+        if (userFind.length == 0)
+        {
+            // user does not yet exist
+            usersCollection.insertOne({
+                user: body.user,
+                totalLikes: 0,
+                totalReviews: 1
+            });
+        } else
+        {
+            let userFound = userFind[0];
+            await usersCollection.updateOne({ "user.id": { $eq: body.user.id } }, [
+                {
+                    $set: {
+                        totalReviews: userFound.totalReviews + 1
+                    }
+                }
+            ]);
+        }
     }
 
 

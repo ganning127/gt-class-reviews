@@ -4,6 +4,7 @@ import { NavBar } from "../components/NavBar";
 import { Footer } from "../components/Footer";
 import Confetti from 'react-confetti';
 import { useEffect, useState } from "react";
+import { NextSeo } from "next-seo";
 
 export default function ReviewSubmitted()
 {
@@ -20,6 +21,12 @@ export default function ReviewSubmitted()
 
         return (
             <>
+                <NextSeo
+                    title="Review Submitted | GT Class Reviews"
+                    description="Thank you for submitting a class review!"
+                />
+
+
                 <Box height='80vh'>
                     <Confetti
                         width={dims[0]}

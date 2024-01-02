@@ -8,32 +8,25 @@ export default async function handler(req, res)
     const body = JSON.parse(req.body);
     const currLikes = body.currLikes;
     const filter = { _id: new ObjectId(body._id) };
-    const resp = await db
+    await db
         .collection("reviews")
         .updateOne(filter, { $set: { likes: currLikes } });
 
-    // const classCollection = db.collection("classes");
-    // let classFind = await classCollection.find({ courseCode: { $eq: body.courseCode } }).toArray();
-    // let courseFound = classFind[0];
-    // let classReviews = courseFound.reviews;
-    // // go through the classReviews array, and update the one with the _id equal to body._id and then update the likes on that one
+    const usersCollection = db.collection("users");
+    let userFind = await usersCollection.find({ "user.id": { $eq: body.userId } }).toArray();
 
-    // for (var i = 0; i < classReviews.length; i++)
-    // {
-    //     if (classReviews[i]._id == body._id)
-    //     {
-    //         classReviews[i].likes++;
-    //     }
-    // }
-
-    // await classCollection.updateOne({ courseCode: { $eq: body.courseCode } }, [
-    //     {
-    //         $set: {
-    //             reviews: classReviews,
-    //         }
-    //     }
-    // ]);
-
+    if (userFind.length != 0)
+    {
+        // this should always be true, because a user's post can only be liked if they have posted before
+        console.log("user found updating...", body.userId);
+        await usersCollection.updateOne({ "user.id": { $eq: body.userId } }, [
+            {
+                $set: {
+                    totalLikes: userFind[0].totalLikes + 1
+                }
+            }
+        ]);
+    }
 
 
 

@@ -62,6 +62,7 @@ export const ReviewCard = ({ review }) =>
                                 method: "POST",
                                 body: JSON.stringify({
                                     _id: review._id,
+                                    userId: review.user.id,
                                     currLikes: review.likes,
                                     courseCode: review.courseCode
                                 }),
