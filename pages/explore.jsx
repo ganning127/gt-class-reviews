@@ -74,9 +74,12 @@ export default function Explore({ success, classes })
                     {
                         theClasses.map((c, i) =>
                         {
-                            return (
-                                <ClassCard c={c} key={i} />
-                            );
+                            if (c.courseCode !== "")
+                            {
+                                return (
+                                    <ClassCard c={c} key={i} />
+                                );
+                            }
                         })
                     }
                 </Stack>
@@ -102,43 +105,47 @@ export default function Explore({ success, classes })
                             {
                                 theClasses.map((c, i) =>
                                 {
-                                    return (
-                                        <Tr key={i} onClick={() =>
-                                        {
-                                            router.push(`/class/${c.courseCode}`);
-                                        }} transition='all .1s' _hover={{
-                                            color: "#B3A369",
-                                            cursor: "pointer",
-                                            fontWeight: "bold"
-                                        }}>
+                                    if (c.courseCode !== "")
+                                    {
+
+
+                                        return (
+                                            <Tr key={i} onClick={() =>
                                             {
-                                                c.courseName && <Td>{c.courseName}<br /><Text fontSize='sm' color='gray.600' mt={1}>{c.courseCode.toUpperCase()}</Text></Td>
+                                                router.push(`/class/${c.courseCode}`);
+                                            }} transition='all .1s' _hover={{
+                                                color: "#B3A369",
+                                                cursor: "pointer",
+                                                fontWeight: "bold"
+                                            }}>
+                                                {
+                                                    c.courseName && <Td>{c.courseName}<br /><Text fontSize='sm' color='gray.600' mt={1}>{c.courseCode.toUpperCase()}</Text></Td>
 
-                                            }
-                                            {
-                                                !c.courseName && <Td>{c.courseCode.toUpperCase()}</Td>
-                                            }
+                                                }
+                                                {
+                                                    !c.courseName && <Td>{c.courseCode.toUpperCase()}</Td>
+                                                }
 
-                                            <Td isNumeric>
+                                                <Td isNumeric>
+                                                    <Text bg={numberToColorHsl(c.avgOverallRating * 10)} color={c.avgOverallRating <= 2 ? 'white' : ""} display='inline' p={1} rounded='md'>{c.avgOverallRating.toFixed(1)}</Text>
 
-                                                <Text bg={numberToColorHsl(c.avgOverallRating * 10)} color={c.avgOverallRating <= 2 ? 'white' : ""} display='inline' p={1} rounded='md'>{c.avgOverallRating.toFixed(1)}</Text>
-
-                                            </Td>
-                                            <Td isNumeric>
-                                                <Text bg={numberToColorHsl((10 - c.avgDiffRating) * 10)} color={c.avgDiffRating <= 2 ? 'white' : ""} display='inline' p={1} rounded='md'>{c.avgDiffRating.toFixed(1)}</Text>
-                                            </Td>
-                                            <Td isNumeric>
-                                                <Text bg={numberToColorHsl(c.avgInterestingRating * 10)} color={c.avgInterestingRating <= 2 ? 'white' : ""} display='inline' p={1} rounded='md'>{c.avgInterestingRating.toFixed(1)}
-                                                </Text>
-                                            </Td>
-                                            <Td isNumeric>
-                                                <Text bg={numberToColorHslWorkload(c.avgWorkload)} color={c.avgWorkload >= 17 ? 'white' : ""} display='inline' p={1} rounded='md'>
-                                                    {c.avgWorkload.toFixed(1)}
-                                                </Text>
-                                            </Td>
-                                            <Td isNumeric>{c.numReviews}</Td>
-                                        </Tr>
-                                    );
+                                                </Td>
+                                                <Td isNumeric>
+                                                    <Text bg={numberToColorHsl((10 - c.avgDiffRating) * 10)} color={c.avgDiffRating >= 8 ? 'white' : ""} display='inline' p={1} rounded='md'>{c.avgDiffRating.toFixed(1)}</Text>
+                                                </Td>
+                                                <Td isNumeric>
+                                                    <Text bg={numberToColorHsl(c.avgInterestingRating * 10)} color={c.avgInterestingRating <= 2 ? 'white' : ""} display='inline' p={1} rounded='md'>{c.avgInterestingRating.toFixed(1)}
+                                                    </Text>
+                                                </Td>
+                                                <Td isNumeric>
+                                                    <Text bg={numberToColorHslWorkload(c.avgWorkload)} color={c.avgWorkload >= 17 ? 'white' : ""} display='inline' p={1} rounded='md'>
+                                                        {c.avgWorkload.toFixed(1)}
+                                                    </Text>
+                                                </Td>
+                                                <Td isNumeric>{c.numReviews}</Td>
+                                            </Tr>
+                                        );
+                                    }
                                 })
                             }
                         </Tbody>

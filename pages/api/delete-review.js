@@ -7,9 +7,6 @@ export default async function POST(req, res)
     let body = JSON.parse(req.body);
     let review = body.review;
 
-    console.log("review is...", review);
-    console.log(review.user.id);
-
     const client = await clientPromise;
     const db = client.db("GTClassReviews");
 

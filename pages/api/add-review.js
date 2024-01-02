@@ -78,8 +78,6 @@ export default async function POST(req, res)
         });
     } else
     {
-        console.log("user doesn't exist...");
-
         let userFound = userFind[0];
         await usersCollection.updateOne({ "user.id": { $eq: body.user.id } }, [
             {

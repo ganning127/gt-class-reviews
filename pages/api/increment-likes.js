@@ -18,7 +18,6 @@ export default async function handler(req, res)
     if (userFind.length != 0)
     {
         // this should always be true, because a user's post can only be liked if they have posted before
-        console.log("user found updating...", body.userId);
         await usersCollection.updateOne({ "user.id": { $eq: body.userId } }, [
             {
                 $set: {

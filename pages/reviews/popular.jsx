@@ -16,8 +16,6 @@ export default function MostPopularReviews({ success, initialReviews })
         return null;
     }
 
-    console.log(user.id);
-
 
     return (
         <>

@@ -20,8 +20,6 @@ export default function RecentReviews({ success, initialReviews, userId })
     let isThrottled = false;
     let moreCardsExist = true;
 
-    console.log("user id", userId);
-
     const fetchMoreCards = async (currentSkip) =>
     {
         if (!moreCardsExist) return;

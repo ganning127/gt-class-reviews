@@ -122,7 +122,7 @@ export default function Code({ foundClass, initialReviews })
 
                                 <Flex alignItems='center'>
                                     {/* Show the average ratings */}
-                                    <Heading bg={numberToColorHsl((10 - foundClass.avgDiffRating) * 10)} color={foundClass.avgDiffRating <= 2 ? 'white' : ""} display='inline' mr={2} p={1} rounded='md'>{foundClass.avgDiffRating.toFixed(1)}</Heading>
+                                    <Heading bg={numberToColorHsl((10 - foundClass.avgDiffRating) * 10)} color={foundClass.avgDiffRating >= 8 ? 'white' : ""} display='inline' mr={2} p={1} rounded='md'>{foundClass.avgDiffRating.toFixed(1)}</Heading>
                                     <Heading display='inline' size='md'>Average Difficulty Rating</Heading>
                                 </Flex>
 
