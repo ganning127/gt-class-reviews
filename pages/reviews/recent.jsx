@@ -1,6 +1,5 @@
 // show the most recent reviews
 
-import Head from 'next/head';
 import { Stack, Text, Heading, Container, Divider, Spinner } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import clientPromise from '../../lib/mongodb';
@@ -8,10 +7,11 @@ import { ReviewCard } from '../../components/ReviewCard';
 import { useState, useEffect } from 'react';
 import { NavBar } from '../../components/NavBar';
 import { NextSeo } from 'next-seo';
+import { getAuth, buildClerkProps } from "@clerk/nextjs/server";
 
 const INITIAL_NUM = 10;
 
-export default function RecentReviews({ success, initialReviews })
+export default function RecentReviews({ success, initialReviews, userId })
 {
     const [reviews, setReviews] = useState(initialReviews);  // initially populated by `getServerSideProps`; then appended with `fetchMoreCards` 
     const [skip, setSkip] = useState(initialReviews.length);
@@ -19,6 +19,8 @@ export default function RecentReviews({ success, initialReviews })
     const limit = 10; // how many to fetch at a time
     let isThrottled = false;
     let moreCardsExist = true;
+
+    console.log("user id", userId);
 
     const fetchMoreCards = async (currentSkip) =>
     {
@@ -110,7 +112,7 @@ export default function RecentReviews({ success, initialReviews })
                     {
                         reviews.map((review, index) =>
                         {
-                            return <ReviewCard key={index} review={review} />;
+                            return <ReviewCard key={index} review={review} loggedInUserId={userId} />;
                         })
                     }
                     {
@@ -122,10 +124,11 @@ export default function RecentReviews({ success, initialReviews })
     );
 }
 
-export async function getServerSideProps()
+export async function getServerSideProps(context)
 {
     try
     {
+        const { userId } = getAuth(context.req);
         const client = await clientPromise;
         const db = client.db("GTClassReviews");
         const collection = db.collection("reviews");
@@ -137,7 +140,9 @@ export async function getServerSideProps()
         return {
             props: {
                 success: true,
-                initialReviews: reviews
+                initialReviews: reviews,
+                userId,
+                ...buildClerkProps(context.req)
             }
         };
 

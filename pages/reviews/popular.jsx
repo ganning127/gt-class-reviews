@@ -3,11 +3,22 @@ import clientPromise from '../../lib/mongodb';
 import { ReviewCard } from '../../components/ReviewCard';
 import { NextSeo } from 'next-seo';
 import { NavBar } from '../../components/NavBar';
+import { useUser } from '@clerk/nextjs';
 
 const INITIAL_NUM = 20;
 
 export default function MostPopularReviews({ success, initialReviews })
 {
+    const { user, isLoaded } = useUser();
+
+    if (!isLoaded)
+    {
+        return null;
+    }
+
+    console.log(user.id);
+
+
     return (
         <>
             <NextSeo
@@ -26,7 +37,7 @@ export default function MostPopularReviews({ success, initialReviews })
                     {
                         initialReviews.map((review, index) =>
                         {
-                            return <ReviewCard key={index} review={review} />;
+                            return <ReviewCard key={index} review={review} loggedInUserId={user.id} />;
                         })
                     }
                 </Stack>

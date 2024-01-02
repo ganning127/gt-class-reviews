@@ -109,7 +109,7 @@ export default function MyReviews(props)
                     {
                         reviews.map((review, index) =>
                         {
-                            return <ReviewCard key={index} review={review} />;
+                            return <ReviewCard key={index} review={review} loggedInUserId={props.userId} />;
                         })
                     }
                     {

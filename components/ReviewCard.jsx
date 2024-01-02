@@ -1,15 +1,17 @@
 import { Box, Text, Avatar, HStack, Heading, Tooltip, useToast, Spacer, Flex, Button, IconButton, Badge, Icon } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
-import { FiLink2 } from "react-icons/fi";
+import { FiLink2, FiTrash } from "react-icons/fi";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { useState } from "react";
 import { numberToColorHsl, numberToColorHslWorkload } from "../lib/colorFunctions";
 import { BsCalendar, BsFillPersonBadgeFill } from "react-icons/bs";
 
-export const ReviewCard = ({ review }) =>
+export const ReviewCard = ({ review, loggedInUserId }) =>
 {
+    console.log(review.user.id, loggedInUserId);
     const [liked, setLiked] = useState(false);
     const [likes, setLikes] = useState(review.likes);
+    const [display, setDisplay] = useState("block");
     const toast = useToast();
 
     // convert "fall2023" to "Fall 2023"
@@ -21,7 +23,7 @@ export const ReviewCard = ({ review }) =>
     const useSemTaken = semTakenLst.join(" ");
 
     return (
-        <Box p={4} borderRadius='10px' bg='#f1f1f1'>
+        <Box p={4} borderRadius='10px' bg='#f1f1f1' display={display}>
             <Flex>
                 <HStack>
                     {!review.anon && <Avatar src={review.user.imageUrl} height='40px' width='40px' />}
@@ -88,7 +90,7 @@ export const ReviewCard = ({ review }) =>
                             onClick={async () =>
                             {
                                 navigator.clipboard.writeText(
-                                    `https://gtclassreviews@gmail.com-reviews.vercel.app/reviews/${review._id}`
+                                    `https://gt-class-reviews.vercel.app/reviews/${review._id}`
                                 );
                                 toast({
                                     title: "Link copied.",
@@ -100,8 +102,47 @@ export const ReviewCard = ({ review }) =>
                             }}
                         >
                         </IconButton>
-
                     </Box>
+
+                    {loggedInUserId === review.user.id ? <Box>
+                        <IconButton
+                            p={0}
+                            bg=""
+                            m={0}
+                            color="#B3A369"
+                            icon={<FiTrash />}
+                            onClick={async () =>
+                            {
+                                if (confirm(`Are you sure you want to delete the review titled: ${review.reviewTitle}`))
+                                {
+                                    await fetch('/api/delete-review', {
+                                        method: "POST",
+                                        body: JSON.stringify({
+                                            review
+                                        })
+                                    });
+
+                                    setDisplay("none");
+
+
+                                    toast({
+                                        title: "Review deleted.",
+                                        description: "Review has been deleted.",
+                                        status: "success",
+                                        duration: 9000,
+                                        isClosable: true,
+                                    });
+
+                                } else
+                                {
+                                    // nothing happens
+                                };
+
+                            }}
+                        >
+                        </IconButton>
+                    </Box>
+                        : <></>}
                 </Flex>
             </Flex>
 
