@@ -66,7 +66,7 @@ export default function Explore({ success, classes })
 
                     <Text mt={2}>To add your own review of a GT class, please head to: <Link color='#B3A369' _hover={{
                         textDecor: 'underline'
-                    }} href='https://gt-class-reviews.vercel.app/reviews/new' isExternal>https://gt-class-reviews.vercel.app/reviews/new</Link></Text>
+                    }} href='https://gtclassreviews@gmail.com-reviews.vercel.app/reviews/new' isExternal>https://gtclassreviews@gmail.com-reviews.vercel.app/reviews/new</Link></Text>
                 </Box>
 
 

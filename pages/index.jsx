@@ -107,7 +107,7 @@ export default function Home({ numClasses, numReviews })
         </Flex>
 
         <Heading fontWeight='extrabold' color='#b59318' mt={16}>Frequently Asked Questions</Heading>
-        <Text>Can&apos;t find the answer to your question? Please <Link href='mailto:gt-class-reviews@gmail.com' color='#B3A369' _hover={{
+        <Text>Can&apos;t find the answer to your question? Please <Link href='mailto:gtclassreviews@gmail.com' color='#B3A369' _hover={{
           color: '#b59318'
         }}>contact us</Link> and we&apos;ll be happy to help!</Text>
 

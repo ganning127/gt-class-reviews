@@ -86,7 +86,7 @@ export default function RecentReviews({ success, initialReviews })
         return (
             <>
                 <Container maxW='container.lg' p={4}>
-                    <Text>Uh oh! Something went wrong, please refresh this page, or <Link href='mailto:gt-class-reviews@gmail.com' color='#003057' fontWeight='bold'>contact us</Link> if the problem persists.</Text>
+                    <Text>Uh oh! Something went wrong, please refresh this page, or <Link href='mailto:gtclassreviews@gmail.com' color='#003057' fontWeight='bold'>contact us</Link> if the problem persists.</Text>
                 </Container>
             </>
         );

@@ -88,7 +88,7 @@ export const ReviewCard = ({ review }) =>
                             onClick={async () =>
                             {
                                 navigator.clipboard.writeText(
-                                    `https://gt-class-reviews.vercel.app/reviews/${review._id}`
+                                    `https://gtclassreviews@gmail.com-reviews.vercel.app/reviews/${review._id}`
                                 );
                                 toast({
                                     title: "Link copied.",

@@ -7,11 +7,16 @@ export const Footer = () =>
         <>
             <Divider />
 
-            <Flex my={4} px={4}>
-                <Text><Link href='mailto:gt-class-reviews@gmail.com' color='#B3A369' fontWeight='bold' _hover={{
+            <Flex my={4} px={4} flexWrap='initial' justify='space-between'>
+                <Text><Link href='mailto:gtclassreviews@gmail.com' color='#B3A369' fontWeight='bold' _hover={{
                     color: "#876f17"
                 }}>Contact Us</Link></Text>
-                <Spacer />
+
+                <Text><Link href='https://forms.gle/qeLnjQLLJhcPZCMP9' color='#B3A369' fontWeight='bold' _hover={{
+                    color: "#876f17"
+                }} isExternal>Feature Request</Link></Text>
+
+                {/* <Spacer /> */}
                 <Text color='#876f17'>&copy; 2023 GT Class Reviews</Text>
 
             </Flex>
