@@ -32,7 +32,7 @@ export const ReviewCard = ({ review, loggedInUserId }) =>
                         <Text fontSize='sm' m={0} p={0}><Text as='span' fontWeight='bold'>{review.anon ? "Anonymous" : review.user.fullName}</Text> on <Link href={`/class/${review.courseCode}`} color='#B3A369' textDecor='underline' _hover={{
                             color: 'blue.700'
                         }}>{review.courseCode.toUpperCase()}</Link></Text>
-                        <Flex align='center' gap={2} fontSize='sm' m={0} p={0} color='gray.500'>
+                        <Flex align='center' gap={2} fontSize='sm' m={0} p={0} color='gray.500' flexWrap="wrap">
                             <Text suppressHydrationWarning>{timeSince(new Date(review.created_at))} ago</Text>•
                             <Flex align='center' gap={1}>
                                 <Icon as={BsFillPersonBadgeFill} />
@@ -105,6 +105,7 @@ export const ReviewCard = ({ review, loggedInUserId }) =>
 
                     {loggedInUserId === review.user.id ? <Box>
                         <IconButton
+                            display={{ base: "none", md: "block" }}
                             p={0}
                             bg=""
                             m={0}

@@ -1,17 +1,17 @@
 import Head from 'next/head';
 import clientPromise from "../../lib/mongodb";
-import { Container, Flex, Heading, SimpleGrid, Text, Badge, Box, Stack, Spinner } from '@chakra-ui/react';
+import { Container, Flex, Heading, SimpleGrid, Box, Stack, Spinner } from '@chakra-ui/react';
 import { ReviewCard } from '../../components/ReviewCard';
-import { Link } from "@chakra-ui/next-js";
 import { NavBar } from '../../components/NavBar';
 import { Footer } from '../../components/Footer';
 import { useRef } from 'react';
 import { useEffect, useState } from 'react';
 import { numberToColorHsl, numberToColorHslWorkload } from '../../lib/colorFunctions';
+import { getAuth } from "@clerk/nextjs/server";
 
 const INITIAL_NUM = 10;
 
-export default function Code({ foundClass, initialReviews })
+export default function Code({ foundClass, initialReviews, userId })
 {
     const scrollContainer = useRef(null);
     const [reviews, setReviews] = useState(initialReviews);
@@ -154,7 +154,7 @@ export default function Code({ foundClass, initialReviews })
                         {reviews.map((review, i) =>
                         {
                             return (
-                                <ReviewCard review={review} key={i} />
+                                <ReviewCard review={review} loggedInUserId={userId} key={i} />
                             );
                         })}
 
@@ -171,6 +171,7 @@ export default function Code({ foundClass, initialReviews })
 
 export async function getServerSideProps(context)
 {
+    const { userId } = getAuth(context.req);
     const code = context.query.code;
     const client = await clientPromise;
     const db = client.db("GTClassReviews");
@@ -191,7 +192,8 @@ export async function getServerSideProps(context)
     return {
         props: {
             foundClass: toReturn,
-            initialReviews: reviews
+            initialReviews: reviews,
+            userId,
         }
     };
 }
