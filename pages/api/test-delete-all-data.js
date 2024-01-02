@@ -5,7 +5,7 @@ import clientPromise from "../../lib/mongodb";
 
 export default async function GET(req, res)
 {
-    const COLLECTION_TO_EMPTY = "users"; // modify this line
+    const COLLECTION_TO_EMPTY = "classes"; // modify this line
 
     const client = await clientPromise;
     const db = client.db("GTClassReviews");
