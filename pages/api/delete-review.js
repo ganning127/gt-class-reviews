@@ -35,11 +35,21 @@ export default async function POST(req, res)
     const classCollection = db.collection("classes");
     let classFind = await classCollection.find({ courseCode: { $eq: review.courseCode } }).toArray();
     let courseFound = classFind[0];
-    let newNumReviewsClass = Math.max(courseFound.numReviews - 1, 0); // can't go below 0
+    let numReviews = courseFound.numReviews;
+    let newNumReviewsClass = Math.max(numReviews - 1, 0); // can't go below 0
+
+    let newAvgOverall = removeValFromAvg(courseFound.avgOverallRating, review.overallRating, numReviews);
+    let newAvgDiff = removeValFromAvg(courseFound.avgDiffRating, review.diffRating, numReviews);
+    let newAvgInterest = removeValFromAvg(courseFound.avgInterestingRating, review.interestingRating, numReviews);
+    let newAvgWorkload = removeValFromAvg(courseFound.avgWorkload, review.workload, numReviews);
 
     await classCollection.updateOne({ courseCode: { $eq: review.courseCode } }, [
         {
             $set: {
+                avgOverallRating: newAvgOverall,
+                avgDiffRating: newAvgDiff,
+                avgInterestingRating: newAvgInterest,
+                avgWorkload: newAvgWorkload,
                 numReviews: newNumReviewsClass
             }
         }
@@ -50,3 +60,16 @@ export default async function POST(req, res)
         "success": true
     });
 }
+
+
+const removeValFromAvg = (avg, value, oldLength) =>
+{
+    if ((oldLength - 1) <= 0)
+    {
+        return 0;
+    }
+
+    let newAverage = ((avg * oldLength) - value) / (oldLength - 1);
+
+    return newAverage;
+};

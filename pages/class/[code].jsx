@@ -6,7 +6,7 @@ import { NavBar } from '../../components/NavBar';
 import { Footer } from '../../components/Footer';
 import { useRef } from 'react';
 import { useEffect, useState } from 'react';
-import { numberToColorHsl, numberToColorHslWorkload } from '../../lib/colorFunctions';
+import { numberToColorHsl, numberToColorHslWorkload, determineRegColor } from '../../lib/colorFunctions';
 import { getAuth } from "@clerk/nextjs/server";
 
 const INITIAL_NUM = 10;
@@ -116,20 +116,20 @@ export default function Code({ foundClass, initialReviews, userId })
                             <Stack direction='column' mt={4} justify='flex-start' width='center' spacing={8}>
                                 <Flex alignItems='center'>
                                     {/* Show the average ratings */}
-                                    <Heading bg={numberToColorHsl(foundClass.avgOverallRating * 10)} color={foundClass.avgOverallRating <= 2 ? 'white' : ""} display='inline' mr={2} p={1} rounded='md'>{foundClass.avgOverallRating.toFixed(1)}</Heading>
+                                    <Heading bg={numberToColorHsl(foundClass.avgOverallRating * 10)} color={determineRegColor(foundClass.avgOverallRating)} display='inline' mr={2} p={1} rounded='md'>{foundClass.avgOverallRating.toFixed(1)}</Heading>
                                     <Heading display='inline' size='md'>Average Overall Rating</Heading>
                                 </Flex>
 
                                 <Flex alignItems='center'>
                                     {/* Show the average ratings */}
-                                    <Heading bg={numberToColorHsl((10 - foundClass.avgDiffRating) * 10)} color={foundClass.avgDiffRating >= 8 ? 'white' : ""} display='inline' mr={2} p={1} rounded='md'>{foundClass.avgDiffRating.toFixed(1)}</Heading>
+                                    <Heading bg={numberToColorHsl((10 - foundClass.avgDiffRating) * 10, true)} color={foundClass.avgDiffRating >= 8 ? 'white' : ""} display='inline' mr={2} p={1} rounded='md'>{foundClass.avgDiffRating.toFixed(1)}</Heading>
                                     <Heading display='inline' size='md'>Average Difficulty Rating</Heading>
                                 </Flex>
 
 
                                 <Flex alignItems='center'>
                                     {/* Show the average ratings */}
-                                    <Heading bg={numberToColorHsl((foundClass.avgInterestingRating) * 10)} color={foundClass.avgInterestingRating <= 2 ? 'white' : ""} display='inline' mr={2} p={1} rounded='md'>{foundClass.avgInterestingRating.toFixed(1)}</Heading>
+                                    <Heading bg={numberToColorHsl((foundClass.avgInterestingRating) * 10)} color={determineRegColor(foundClass.avgInterestingRating)} display='inline' mr={2} p={1} rounded='md'>{foundClass.avgInterestingRating.toFixed(1)}</Heading>
                                     <Heading display='inline' size='md'>Average Interesting Rating</Heading>
                                 </Flex>
 

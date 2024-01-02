@@ -3,7 +3,7 @@ import { Box, Heading, Icon } from "@chakra-ui/react";
 import { Text, Flex, Spacer, Badge } from "@chakra-ui/react";
 import { useRouter } from 'next/navigation';
 import { FaRegUser } from "react-icons/fa";
-import { numberToColorHsl, numberToColorHslWorkload } from "../lib/colorFunctions";
+import { numberToColorHsl, numberToColorHslWorkload, determineRegColor } from "../lib/colorFunctions";
 
 export const ClassCard = ({ c }) =>
 {
@@ -37,9 +37,9 @@ export const ClassCard = ({ c }) =>
             </Flex>
 
             <Box mt={2}>
-                <Badge bg={numberToColorHsl(c.avgOverallRating * 10)} color={c.avgOverallRating <= 2 ? 'white' : ""} mr={2}>{c.avgOverallRating.toFixed(1)} / 10 Overall</Badge>
-                <Badge bg={numberToColorHsl((10 - c.avgDiffRating) * 10)} color={c.avgDiffRating >= 2 ? 'white' : ""} mr={2}>{c.avgDiffRating.toFixed(1)}/ 10 Difficulty</Badge>
-                <Badge bg={numberToColorHsl(c.avgInterestingRating * 10)} color={c.avgInterestingRating <= 2 ? 'white' : ""} mr={2}>{c.avgInterestingRating.toFixed(1)} / 10 Interesting</Badge>
+                <Badge bg={numberToColorHsl(c.avgOverallRating * 10)} color={determineRegColor(c.avgOverallRating)} mr={2}>{c.avgOverallRating.toFixed(1)} / 10 Overall</Badge>
+                <Badge bg={numberToColorHsl((10 - c.avgDiffRating) * 10, true)} color={c.avgDiffRating >= 2 ? 'white' : ""} mr={2}>{c.avgDiffRating.toFixed(1)}/ 10 Difficulty</Badge>
+                <Badge bg={numberToColorHsl(c.avgInterestingRating * 10)} color={determineRegColor(c.avgInterestingRating)} mr={2}>{c.avgInterestingRating.toFixed(1)} / 10 Interesting</Badge>
                 <Badge bg={numberToColorHslWorkload(c.avgWorkload)} color={c.avgWorkload >= 17 ? 'white' : ""}>{c.avgWorkload.toFixed(1)} hours/week</Badge>
             </Box>
 

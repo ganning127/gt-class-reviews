@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation';
 import { ClassCard } from '../components/ClassCard';
 import { useState } from 'react';
 import { NextSeo } from 'next-seo';
-import { numberToColorHsl, numberToColorHslWorkload } from '../lib/colorFunctions';
+import { numberToColorHsl, numberToColorHslWorkload, determineRegColor } from '../lib/colorFunctions';
 import { Link } from '@chakra-ui/next-js';
 
 export default function Explore({ success, classes })
@@ -127,14 +127,14 @@ export default function Explore({ success, classes })
                                                 }
 
                                                 <Td isNumeric>
-                                                    <Text bg={numberToColorHsl(c.avgOverallRating * 10)} color={c.avgOverallRating <= 2 ? 'white' : ""} display='inline' p={1} rounded='md'>{c.avgOverallRating.toFixed(1)}</Text>
+                                                    <Text bg={numberToColorHsl(c.avgOverallRating * 10)} color={determineRegColor(c.avgOverallRating)} display='inline' p={1} rounded='md'>{c.avgOverallRating.toFixed(1)}</Text>
 
                                                 </Td>
                                                 <Td isNumeric>
-                                                    <Text bg={numberToColorHsl((10 - c.avgDiffRating) * 10)} color={c.avgDiffRating >= 8 ? 'white' : ""} display='inline' p={1} rounded='md'>{c.avgDiffRating.toFixed(1)}</Text>
+                                                    <Text bg={numberToColorHsl((10 - c.avgDiffRating) * 10, true)} color={c.avgDiffRating >= 8 ? 'white' : ""} display='inline' p={1} rounded='md'>{c.avgDiffRating.toFixed(1)}</Text>
                                                 </Td>
                                                 <Td isNumeric>
-                                                    <Text bg={numberToColorHsl(c.avgInterestingRating * 10)} color={c.avgInterestingRating <= 2 ? 'white' : ""} display='inline' p={1} rounded='md'>{c.avgInterestingRating.toFixed(1)}
+                                                    <Text bg={numberToColorHsl(c.avgInterestingRating * 10)} color={determineRegColor(c.avgInterestingRating)} display='inline' p={1} rounded='md'>{c.avgInterestingRating.toFixed(1)}
                                                     </Text>
                                                 </Td>
                                                 <Td isNumeric>
