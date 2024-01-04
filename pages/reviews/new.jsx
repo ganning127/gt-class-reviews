@@ -30,21 +30,25 @@ import { useState } from 'react';
 import { NavBar } from '../../components/NavBar';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
+import clientPromise from '../../lib/mongodb';
+import { getAuth } from "@clerk/nextjs/server";
+import { ObjectId } from 'mongodb';
+import { Footer } from '../../components/Footer';
 
-export default function New()
+export default function New({ success, isEdit, review })
 {
     const toast = useToast();
     const { user } = useUser();
-    const [courseCode, setCourseCode] = useState("");
-    const [prof, setProf] = useState("");
-    const [semTaken, setSemTaken] = useState("fall2023");
-    const [overallRating, setOverallRating] = useState(5);
-    const [diffRating, setDiffRating] = useState(5);
-    const [interestingRating, setInterestingRating] = useState(5);
-    const [workload, setWorkload] = useState(10);
-    const [reviewTitle, setReviewTitle] = useState("");
-    const [anon, setAnon] = useState(false);
-    const [reviewComments, setReviewComments] = useState("");
+    const [courseCode, setCourseCode] = useState(isEdit ? review.courseCode : "");
+    const [prof, setProf] = useState(isEdit ? review.prof : "");
+    const [semTaken, setSemTaken] = useState(isEdit ? review.semTaken : "fall2023");
+    const [overallRating, setOverallRating] = useState(isEdit ? review.overallRating : 5);
+    const [diffRating, setDiffRating] = useState(isEdit ? review.diffRating : 5);
+    const [interestingRating, setInterestingRating] = useState(isEdit ? review.interestingRating : 5);
+    const [workload, setWorkload] = useState(isEdit ? review.workload : 10);
+    const [reviewTitle, setReviewTitle] = useState(isEdit ? review.reviewTitle : "");
+    const [anon, setAnon] = useState(isEdit ? review.anon : false);
+    const [reviewComments, setReviewComments] = useState(isEdit ? review.reviewComments : "");
 
     const [loading, setLoading] = useState(false);
     const router = useRouter();
@@ -55,41 +59,104 @@ export default function New()
 
         const courseCodeUse = courseCode.toLowerCase().replaceAll(' ', '');
 
-        const dataObj = {
+        let dataObj = {
             user, courseCode: courseCodeUse, prof, semTaken, overallRating, diffRating, interestingRating, workload, workload, reviewTitle, reviewComments, anon
         };
 
-        const resp = await fetch('/api/add-review', {
-            method: "POST",
-            body: JSON.stringify(dataObj)
-        });
-
-        const data = await resp.json();
-        if (data.success)
+        if (isEdit)
         {
-            toast({
-                title: 'Review submitted.',
-                description: `Your review has been submitted for ${courseCode}`,
-                status: 'success',
-                duration: 9000,
-                isClosable: true,
+            console.log("editing...");
+            dataObj['likes'] = review.likes;
+            dataObj['_id'] = review._id;
+            console.log(dataObj);
+            const resp = await fetch('/api/edit-review', {
+                method: "POST",
+                body: JSON.stringify({
+                    oldOverallRating: review.overallRating,
+                    oldDiffRating: review.diffRating,
+                    oldInterestingRating: review.interestingRating,
+                    oldWorkload: review.workload,
+                    dataObj
+                })
             });
 
-            router.push(`/review-submitted?courseCode=${courseCode}`);
+            const data = await resp.json();
+
+            if (data.success)
+            {
+                toast({
+                    title: 'Review saved.',
+                    description: `Your review has been updated for ${courseCode}`,
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                });
+
+                router.push(`/review-submitted?courseCode=${courseCode}`);
+
+            } else
+            {
+                toast({
+                    title: 'Review saving error.',
+                    description: `There was an error saving your review for ${courseCode}, please try again, or contact us if the issue persists.`,
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                });
+            }
 
         } else
         {
-            toast({
-                title: 'Review submission error.',
-                description: `There was an error submitting your review for ${courseCode}, please try again, or contact us if the issue persists.`,
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
+            const resp = await fetch('/api/add-review', {
+                method: "POST",
+                body: JSON.stringify(dataObj)
             });
+
+            const data = await resp.json();
+            if (data.success)
+            {
+                toast({
+                    title: 'Review submitted.',
+                    description: `Your review has been submitted for ${courseCode}`,
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                });
+
+                router.push(`/review-submitted?courseCode=${courseCode}`);
+
+            } else
+            {
+                toast({
+                    title: 'Review submission error.',
+                    description: `There was an error submitting your review for ${courseCode}, please try again, or contact us if the issue persists.`,
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                });
+            }
+
         }
+
 
         setLoading(false);
     };
+
+    if (!success)
+    {
+        return (
+            <>
+                <NavBar />
+                <Container maxW='container.lg' p={4} textAlign='center'>
+                    <Text mt={8}>Oops! It seems like you don&apos;t have edit access to this review.</Text>
+                    <Button as='a' href='/reviews/new' bg='#B3A369' color='white' mt={4} _hover={{
+                        bg: "#876f17"
+                    }}>Add your own review</Button>
+
+                </Container>
+            </>
+        );
+    }
 
     return (
         <>
@@ -98,7 +165,7 @@ export default function New()
                 description="Contribute to our database of reviews."
             />
             <NavBar />
-            <Container maxW='container.lg' p={4}>
+            <Container maxW='container.lg' p={4} mb={8}>
                 <Heading fontWeight='extrabold' color='#b59318'>Add a review</Heading>
                 <Text mt={2}>Thank you for contributing, your review helps GT students understand classes better :)</Text>
 
@@ -132,7 +199,7 @@ export default function New()
                         <FormControl>
                             <FormLabel >Overall Rating</FormLabel>
                             <FormHelperText>1 = hated it, 10 = loved it</FormHelperText>
-                            <Slider defaultValue={5} min={1} max={10} step={1} onChange={(val) => setOverallRating(val)} mt={10}>
+                            <Slider defaultValue={isEdit ? review.overallRating : 5} min={1} max={10} step={1} onChange={(val) => setOverallRating(val)} mt={10}>
                                 <SliderMark
                                     value={overallRating}
                                     textAlign='center'
@@ -154,7 +221,7 @@ export default function New()
                         <FormControl>
                             <FormLabel >Difficulty Rating</FormLabel>
                             <FormHelperText>1 = easy, 10 = impossible</FormHelperText>
-                            <Slider defaultValue={5} min={1} max={10} step={1} onChange={(val) => setDiffRating(val)} mt={10}>
+                            <Slider defaultValue={isEdit ? review.diffRating : 5} min={1} max={10} step={1} onChange={(val) => setDiffRating(val)} mt={10}>
                                 <SliderMark
                                     value={diffRating}
                                     textAlign='center'
@@ -178,7 +245,7 @@ export default function New()
                         <FormControl>
                             <FormLabel>Interesting Rating</FormLabel>
                             <FormHelperText>1 = mind-dumbingly boring, 10 = absolutely fascinating</FormHelperText>
-                            <Slider defaultValue={5} min={1} max={10} step={1} onChange={(val) => setInterestingRating(val)} mt={10}>
+                            <Slider defaultValue={isEdit ? review.interestingRating : 5} min={1} max={10} step={1} onChange={(val) => setInterestingRating(val)} mt={10}>
                                 <SliderMark
                                     value={interestingRating}
                                     textAlign='center'
@@ -200,7 +267,7 @@ export default function New()
                         <FormControl>
                             <FormLabel>Workload</FormLabel>
                             <FormHelperText>hours spent on class (lectures, hw, studying, etc) per week</FormHelperText>
-                            <Slider defaultValue={15} min={1} max={100} step={1} onChange={(val) => setWorkload(val)} mt={10}>
+                            <Slider defaultValue={isEdit ? review.workload : 10} min={1} max={100} step={1} onChange={(val) => setWorkload(val)} mt={10}>
                                 <SliderMark
                                     value={workload}
                                     textAlign='center'
@@ -246,13 +313,71 @@ export default function New()
                         <Textarea mt={4} placeholder={`e.g. ${courseCode ? courseCode : "MATH 1554"} was...`} rows={8} value={reviewComments} onChange={(e) => setReviewComments(e.target.value)} />
                     </FormControl>
 
-                    <Checkbox value={anon} onChange={(e) => setAnon(e.target.checked)}>post review anonymously</Checkbox>
+                    <Checkbox value={anon} isChecked={anon} onChange={(e) => setAnon(e.target.checked)}>post review anonymously</Checkbox>
 
                     <Button bg='#B3A369' color='white' _hover={{
                         bg: "#b59318"
-                    }} onClick={handleSubmitReview} isLoading={loading} loadingText={`Submitting review for ${courseCode}`}>Submit Review</Button>
+                    }} onClick={handleSubmitReview} isLoading={loading} loadingText={`${isEdit ? 'Saving' : 'Submitting'} review for ${courseCode}`}>{isEdit ? 'Save' : 'Submit'} Review</Button>
                 </Stack>
             </Container>
+
+            <Footer />
         </>
     );
+}
+
+export async function getServerSideProps(context)
+{
+    try
+    {
+        const { userId } = getAuth(context.req);
+        const reviewIdToPull = context.query.editId;
+        const client = await clientPromise;
+        const db = client.db("GTClassReviews");
+        const collection = db.collection("reviews");
+
+        if (reviewIdToPull != null)
+        {
+            let reviews = await collection.find({
+                _id: { $eq: ObjectId(reviewIdToPull) }
+            }).toArray();
+
+            reviews = JSON.parse(JSON.stringify(reviews));
+
+            let review = reviews[0];
+
+            // check if user id are same
+            if (userId !== review.user.id)
+            {
+                return {
+                    props: {
+                        success: false,
+                    }
+                };
+            }
+
+            return {
+                props: {
+                    success: true,
+                    isEdit: true,
+                    review,
+                }
+            };
+        } else
+        {
+            return {
+                props: {
+                    success: true,
+                    isEdit: false
+
+                }
+            };
+        }
+    } catch (e)
+    {
+        console.error(e);
+        return {
+            props: { success: false },
+        };
+    }
 }

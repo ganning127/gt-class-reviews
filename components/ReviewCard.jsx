@@ -4,14 +4,17 @@ import { FiLink2, FiTrash } from "react-icons/fi";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { useState } from "react";
 import { numberToColorHsl, numberToColorHslWorkload } from "../lib/colorFunctions";
-import { BsCalendar, BsFillPersonBadgeFill } from "react-icons/bs";
+import { BsCalendar, BsFillPersonBadgeFill, BsPencil, BsPencilFill } from "react-icons/bs";
+import { useRouter } from "next/router";
 
 export const ReviewCard = ({ review, loggedInUserId }) =>
 {
     const [liked, setLiked] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const [likes, setLikes] = useState(review.likes);
     const [display, setDisplay] = useState("block");
     const toast = useToast();
+    const router = useRouter();
 
     // convert "fall2023" to "Fall 2023"
     let indexSplit = review.semTaken.indexOf('2');
@@ -105,7 +108,25 @@ export const ReviewCard = ({ review, loggedInUserId }) =>
 
                     {loggedInUserId === review.user.id ? <Box>
                         <IconButton
-                            display={{ base: "none", md: "block" }}
+                            display={{ base: "none", md: "flex" }}
+                            p={0}
+                            bg=""
+                            m={0}
+                            color="#B3A369"
+                            icon={isEditing ? <BsPencilFill /> : <BsPencil />}
+                            onClick={async () =>
+                            {
+                                router.push(`/reviews/new?editId=${review._id}`);
+                            }}
+                        >
+                        </IconButton>
+                    </Box>
+                        : <></>}
+
+
+                    {loggedInUserId === review.user.id ? <Box>
+                        <IconButton
+                            display={{ base: "none", md: "flex" }}
                             p={0}
                             bg=""
                             m={0}
