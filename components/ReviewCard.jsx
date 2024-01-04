@@ -1,4 +1,4 @@
-import { Box, Text, Avatar, HStack, Heading, Tooltip, useToast, Spacer, Flex, Button, IconButton, Badge, Icon } from "@chakra-ui/react";
+import { Box, Text, Avatar, HStack, Heading, Tooltip, useToast, Spacer, Flex, Button, IconButton, Badge, Icon, Stack } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
 import { FiLink2, FiTrash } from "react-icons/fi";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
@@ -51,120 +51,128 @@ export const ReviewCard = ({ review, loggedInUserId }) =>
 
                 <Spacer />
 
-                <Flex>
-                    <Button
-                        p={0}
-                        bg=""
-                        m={0}
-                        rightIcon={liked ? <AiFillLike /> : <AiOutlineLike />}
-                        color="#B3A369"
-                        onClick={async () =>
-                        {
-                            setLikes(++review.likes);
-                            setLiked(true);
-                            await fetch(`/api/increment-likes/`, {
-                                method: "POST",
-                                body: JSON.stringify({
-                                    _id: review._id,
-                                    userId: review.user.id,
-                                    currLikes: review.likes,
-                                    courseCode: review.courseCode
-                                }),
-                            });
-
-                            toast({
-                                title: "Review liked.",
-                                status: "success",
-                                duration: 3000,
-                                isClosable: true,
-                            });
-                        }}
-                    >
-                        {review.likes}
-                    </Button>
-                    <Box>
-                        <IconButton
+                <Stack direction='column' spacing={0}>
+                    <Flex>
+                        <Button
                             p={0}
                             bg=""
                             m={0}
+                            rightIcon={liked ? <AiFillLike /> : <AiOutlineLike />}
                             color="#B3A369"
-                            icon={<FiLink2 />}
                             onClick={async () =>
                             {
-                                navigator.clipboard.writeText(
-                                    `https://gt-class-reviews.vercel.app/reviews/${review._id}`
-                                );
+                                setLikes(++review.likes);
+                                setLiked(true);
+                                await fetch(`/api/increment-likes/`, {
+                                    method: "POST",
+                                    body: JSON.stringify({
+                                        _id: review._id,
+                                        userId: review.user.id,
+                                        currLikes: review.likes,
+                                        courseCode: review.courseCode
+                                    }),
+                                });
+
                                 toast({
-                                    title: "Link copied.",
-                                    description: "The link to this review has been copied.",
+                                    title: "Review liked.",
                                     status: "success",
-                                    duration: 9000,
+                                    duration: 3000,
                                     isClosable: true,
                                 });
                             }}
                         >
-                        </IconButton>
-                    </Box>
-
-                    {loggedInUserId === review.user.id ? <Box>
-                        <IconButton
-                            display={{ base: "none", md: "flex" }}
-                            p={0}
-                            bg=""
-                            m={0}
-                            color="#B3A369"
-                            icon={isEditing ? <BsPencilFill /> : <BsPencil />}
-                            onClick={async () =>
-                            {
-                                router.push(`/reviews/new?editId=${review._id}`);
-                            }}
-                        >
-                        </IconButton>
-                    </Box>
-                        : <></>}
-
-
-                    {loggedInUserId === review.user.id ? <Box>
-                        <IconButton
-                            display={{ base: "none", md: "flex" }}
-                            p={0}
-                            bg=""
-                            m={0}
-                            color="#B3A369"
-                            icon={<FiTrash />}
-                            onClick={async () =>
-                            {
-                                if (confirm(`Are you sure you want to delete the review titled: ${review.reviewTitle}`))
+                            {review.likes}
+                        </Button>
+                        <Box>
+                            <IconButton
+                                p={0}
+                                bg=""
+                                m={0}
+                                color="#B3A369"
+                                icon={<FiLink2 />}
+                                onClick={async () =>
                                 {
-                                    await fetch('/api/delete-review', {
-                                        method: "POST",
-                                        body: JSON.stringify({
-                                            review
-                                        })
-                                    });
-
-                                    setDisplay("none");
-
-
+                                    navigator.clipboard.writeText(
+                                        `https://gt-class-reviews.vercel.app/reviews/${review._id}`
+                                    );
                                     toast({
-                                        title: "Review deleted.",
-                                        description: "Review has been deleted.",
+                                        title: "Link copied.",
+                                        description: "The link to this review has been copied.",
                                         status: "success",
                                         duration: 9000,
                                         isClosable: true,
                                     });
+                                }}
+                            >
+                            </IconButton>
+                        </Box>
+                    </Flex>
 
-                                } else
-                                {
-                                    // nothing happens
-                                };
 
-                            }}
-                        >
-                        </IconButton>
-                    </Box>
-                        : <></>}
-                </Flex>
+                    {
+                        loggedInUserId === review.user.id ? <>
+                            <Flex ml={0} mt={-2}>
+                                <Box>
+                                    <IconButton
+                                        display={{ base: "none", md: "flex" }}
+                                        p={0}
+                                        bg=""
+                                        m={0}
+                                        color="#B3A369"
+                                        icon={isEditing ? <BsPencilFill /> : <BsPencil />}
+                                        onClick={async () =>
+                                        {
+                                            router.push(`/reviews/new?editId=${review._id}`);
+                                        }}
+                                    >
+                                    </IconButton>
+                                </Box>
+
+                                <Box>
+                                    <IconButton
+                                        display={{ base: "none", md: "flex" }}
+                                        p={0}
+                                        bg=""
+                                        m={0}
+                                        color="#B3A369"
+                                        icon={<FiTrash />}
+                                        onClick={async () =>
+                                        {
+                                            if (confirm(`Are you sure you want to delete the review titled: ${review.reviewTitle}`))
+                                            {
+                                                await fetch('/api/delete-review', {
+                                                    method: "POST",
+                                                    body: JSON.stringify({
+                                                        review
+                                                    })
+                                                });
+
+                                                setDisplay("none");
+
+
+                                                toast({
+                                                    title: "Review deleted.",
+                                                    description: "Review has been deleted.",
+                                                    status: "success",
+                                                    duration: 9000,
+                                                    isClosable: true,
+                                                });
+
+                                            } else
+                                            {
+                                                // nothing happens
+                                            };
+
+                                        }}
+                                    >
+                                    </IconButton>
+                                </Box>
+                            </Flex>
+                        </> : <></>
+                    }
+                </Stack>
+
+
             </Flex>
 
             <Box mt={4}>
