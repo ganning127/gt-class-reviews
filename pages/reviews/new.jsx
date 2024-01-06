@@ -56,8 +56,21 @@ export default function New({ success, isEdit, review })
     const handleSubmitReview = async () =>
     {
         setLoading(true);
-
         const courseCodeUse = courseCode.toLowerCase().replaceAll(' ', '');
+
+        if (courseCodeUse == "")
+        {
+            toast({
+                title: 'Please fill out the course code field',
+                description: `The course code is required for all reviews.`,
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            });
+
+            setLoading(false);
+            return;
+        }
 
         let dataObj = {
             user, courseCode: courseCodeUse, prof, semTaken, overallRating, diffRating, interestingRating, workload, workload, reviewTitle, reviewComments, anon
@@ -65,10 +78,8 @@ export default function New({ success, isEdit, review })
 
         if (isEdit)
         {
-            console.log("editing...");
             dataObj['likes'] = review.likes;
             dataObj['_id'] = review._id;
-            console.log(dataObj);
             const resp = await fetch('/api/edit-review', {
                 method: "POST",
                 body: JSON.stringify({
@@ -173,7 +184,7 @@ export default function New({ success, isEdit, review })
 
                 <Stack spacing={8} direction='column'>
                     <SimpleGrid columns={{ base: 1, md: 3 }} spacingX={4} mt={4}>
-                        <FormControl>
+                        <FormControl isRequired>
                             <FormLabel>Course Code</FormLabel>
                             <Input placeholder='e.g. MATH 1554' value={courseCode} onChange={(e) => setCourseCode(e.target.value)} />
                         </FormControl>
