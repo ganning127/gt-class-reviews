@@ -41,7 +41,7 @@ export default function New({ success, isEdit, review })
     const { user } = useUser();
     const [courseCode, setCourseCode] = useState(isEdit ? review.courseCode : "");
     const [prof, setProf] = useState(isEdit ? review.prof : "");
-    const [semTaken, setSemTaken] = useState(isEdit ? review.semTaken : "fall2023");
+    const [semTaken, setSemTaken] = useState(isEdit ? review.semTaken : "spring2024");
     const [overallRating, setOverallRating] = useState(isEdit ? review.overallRating : 5);
     const [diffRating, setDiffRating] = useState(isEdit ? review.diffRating : 5);
     const [interestingRating, setInterestingRating] = useState(isEdit ? review.interestingRating : 5);
@@ -197,6 +197,7 @@ export default function New({ success, isEdit, review })
                         <FormControl>
                             <FormLabel>Semester Taken</FormLabel>
                             <Select value={semTaken} onChange={(e) => setSemTaken(e.target.value)}>
+                                <option value='spring2024'>Spring 2024</option>
                                 <option value='fall2023'>Fall 2023</option>
                                 <option value='spring2023'>Spring 2023</option>
                                 <option value='fall2022'>Fall 2022</option>
